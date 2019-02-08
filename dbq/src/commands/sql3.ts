@@ -1,4 +1,5 @@
 import {Command, flags} from '@oclif/command'
+import { callbackify } from 'util';
 // import {printTable} from '../../Utils'
 
 export default class Sql3 extends Command {
@@ -6,8 +7,7 @@ export default class Sql3 extends Command {
 
   static flags = {
     help: flags.help({char: 'h'}),
-
-    address: flags.string({ char: 'd', description: 'path to sqlite3 database', required: false, default: './db/inquisitive.db' }),
+    database: flags.string({ char: 'd', description: 'path to sqlite3 database', required: false, default: './db/inquisitive.db' }),
     // user: flags.string({ char: 'u', description: 'sqlite3 user', required: true, default: 'administrator' }),
     // password: flags.string({ char: 'p', required: true, description: 'user password', default:'password' }),
   }
@@ -24,7 +24,7 @@ export default class Sql3 extends Command {
 
         // instantiate
     let table = new Table({
-      head: ['german', 'english']
+      // head: ['german', 'english']
     // , colWidths: [100, 200]
     });
 
@@ -32,9 +32,14 @@ export default class Sql3 extends Command {
 
     // -- Handle Sqlite
     const sqlite3 = require('sqlite3').verbose(); //Sets the execution mode to verbose to produce long stack traces. There is no way to reset this. See the wiki page on debugging for more information.
-    const file = "./db/inquisitive.db";
-    var db = new sqlite3.Database(file); //new sqlite3.Database(filename, [mode], [callback])
-    // db.get()
+
+    // const path = require('path')
+    // const dbPath = path.resolve(__dirname, '../inquisitive.db')
+    // console.log(__dirname)
+
+    let file = flags.database
+    const db = new sqlite3.Database(file); //new sqlite3.Database(filename, [mode], [callback])
+
     db.all(args.query, function (err, rows) {
       rows.forEach(function (row) {
         // console.log(row.german_word, row.english_word);
