@@ -29,25 +29,9 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`dbq exec [FILE]`](#dbq-exec-file)
 * [`dbq hello [FILE]`](#dbq-hello-file)
 * [`dbq help [COMMAND]`](#dbq-help-command)
-
-## `dbq exec [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ dbq exec [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-```
-
-_See code: [src/commands/exec.ts](https://github.com/kishore-d/dbq/blob/v0.0.0/src/commands/exec.ts)_
+* [`dbq sql3 [FILE]`](#dbq-sql-3-file)
 
 ## `dbq hello [FILE]`
 
@@ -85,4 +69,20 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.4/src/commands/help.ts)_
+
+## `dbq sql3 [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ dbq sql3 [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/sql3.ts](https://github.com/kishore-d/dbq/blob/v0.0.0/src/commands/sql3.ts)_
 <!-- commandsstop -->
