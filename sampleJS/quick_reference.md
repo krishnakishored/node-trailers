@@ -190,7 +190,95 @@ const [first, second, , , fifth] = a
 
 
 ### The Node.js Event Loop
+It explains how Node can be asynchronous and have non-blocking I/O
+The Node.js JavaScript code runs on a single thread. There is just one thing happening at a time
+
+- The environment manages multiple concurrent event loops, to handle API calls for example. 
+  Web Workers run in their own event loop as well.
+- Almost all the I/O primitives in JavaScript are non-blocking. Network requests, filesystem operations, and so on. Being blocking is the exception, and this is why JavaScript is based so much on callbacks, and more recently on promises and async/await.
+- The event loop continuously checks the call stack to see if there’s any function that needs to run. While doing so, it adds any function call it finds to the call stack and executes each one in order.
+
+- How to defer a function until the stack is clear
+The use case of `setTimeout(() => {}), 0)` is to call a function, but execute it once every other function in the code has executed. passing '0' as timer instructs the setTimeout() to run immediately
+
+
+
+
+
 
 ### Map
 
 ### Filter
+
+-----
+
+## Oclif
+oclif is a framework for building CLIs in Node. 
+With oclif you can create 2 different CLI types: single and multi.
+* Single CLIs are like ls or curl. They can accept arguments and flags. Single CLIs can optionally be just a single file.       
+`$ npm install -g oclif`        
+`$ npm update -g oclif` (to get the newer releases of the generator)        
+        
+    `$ npx oclif single mynewcli`   
+        npx is included in npm and automatically runs and installs the oclif generator.         
+        To run `$ mynewcli` instead of `$ ./bin/run` you'll need to link your CLI locally using `$ npm link`
+
+* Multi CLIs are like git or heroku. They have subcommands that are themselves single CLIs. In the package.json there is a field oclif.commands that points to a directory. Multi-command CLIs may also include plugins.        
+`$ npx oclif multi mynewmulticli`
+
+* Generator Commands
+    - `$ oclif command NAME` add a command to an existing CLI or plugin     
+    - `$ oclif help [COMMAND]`
+    - `$ oclif hook NAME`
+    - `$ oclif multi [PATH]`
+    - `$ oclif single [PATH]`
+
+* Command Development
+To create a new command 'goodbye'
+    - Run the command generator with `$ npx oclif command goodbye`      
+    - duplicate `./src/commands/hello.ts` as `./src/commands/goodbye.ts` & update the code.     
+    
+- Command Flags
+    Flag options are non-positional arguments passed to the command. Flags can either be option flags which take an argument, or boolean flags which do not. An option flag must have an argument.
+
+- Command Arguments
+    Arguments are positional arguments passed to the command.
+    For variable length arguments, disable argument validation with static strict = false on the command.
+
+- Topics
+    As Multi CLIs grow it can be useful to nest commands within topics. This is supported simply by placing command files in subdirectories.
+
+- Hooks
+    You can create hooks with `$ oclif hook myhook --event=init`
+    
+    oclif exposes lifecycle event hooks such as `init` and `command_not_found`. In addition to these built-in events, you can create your own events and allow commands/plugins to watch for these custom events. It's a great way to allow multiple plugins to interact with each other.
+
+    The hook must also be declared with the event's name and hook's file path under oclif's settings in package.json.
+
+    Multiple hooks of the same event type can be declared with an array.
+
+- Plugins
+    Allow users to extend your CLI, break up a CLI into modular components, or share functionality between CLIs.
+    Plugins can have commands or hooks just like a CLI.
+
+- Tests
+    ToDo    
+
+- Running Commands Programmatically
+
+- Aliases 
+    Aliases let you define a string that maps to a command. 
+
+- Custom Base Class
+    Use inheritance to share functionality between common commands
+    Example: A command base class that has some common shared flags and a log method that can be shared among many commands.
+
+
+- Related Repositories
+    `@oclif/command` - Base command for oclif. This can be used directly without the generator.
+    `@oclif/config` - Most of the core setup for oclif lives here.
+    `@oclif/errors` - Renders and logs errors from commands.
+    `@oclif/cli-ux` - Library for common CLI UI utilities.
+    `@oclif/test` - Test helper for oclif.    
+
+
