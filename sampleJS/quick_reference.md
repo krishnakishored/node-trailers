@@ -3,6 +3,7 @@
 ### JavaScript Closures
 When a function is run, it’s `executed with the scope that was in place when it was defined`, and *__not__ with the state that’s in place when it is executed*.
 - The scope basically is the set of variables which are visible.
+- A function remembers its Lexical Scope, and it’s able to access variables that were defined in the parent scope.
 - The function that’s returned keeps the original state in its scope.
 
 
@@ -201,14 +202,43 @@ The Node.js JavaScript code runs on a single thread. There is just one thing hap
 - How to defer a function until the stack is clear
 The use case of `setTimeout(() => {}), 0)` is to call a function, but execute it once every other function in the code has executed. passing '0' as timer instructs the setTimeout() to run immediately
 
+- The Message Queue
+    When setTimeout() is called, the Browser or Node.js start the timer. Once the timer expires, in this case immediately as we put 0 as the timeout, the callback function is put in the Message Queue.
+
+    The Message Queue is also where user-initiated events like click or keyboard events, or fetch responses are queued before your code has the opportunity to react to them. Or also DOM events like onLoad.
+
+    __The loop gives priority to the call stack, and it first processes everything it finds in the call stack, and once there’s nothing in there, it goes to pick up things in the message queue.__
+
+    We don’t have to wait for functions like setTimeout, fetch or other things to do their own work, because they are provided by the browser, and they live on their own threads. For example, if you set the setTimeout timeout to 2 seconds, you don’t have to wait 2 seconds - the wait happens elsewhere.
+
+
+- ES6 Job Queue
+
+    ECMAScript 2015 introduced the concept of the Job Queue, which is used by Promises (also introduced in ES6/ES2015). It’s a way to execute the result of an async function as soon as possible, rather than being put at the end of the call stack.
+
+    Promises that resolve before the current function ends will be executed right after the current function.
+
+    That’s a big difference between Promises (and Async/await, which is built on promises) and plain old asynchronous functions through setTimeout() or other platform APIs.
 
 
 
 
 
-### Map
 
-### Filter
+
+### Map datastructure
+ECMAScript 6 (also called ES2015) introduced the `Map` data structure to the JavaScript world, along with `Set`. Before its introduction, people generally used objects as maps, by associating some object or value to a specific key value:
+
+
+
+### Array Functions - map, filter, reduce, find
+`map` returns an array with the same length,        
+    - _Execute something on every element with map_       
+
+`filter` as the name implies, it returns an array with less items than the original array
+`reduce` returns a single value (or object)
+`find` returns the first items in an array that satisfies a condition
+    - _`filter()` and `reduce()` will iterate over all the array items, while `find()` will be faster_
 
 -----
 
