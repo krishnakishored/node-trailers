@@ -75,6 +75,7 @@ Traditionally JavaScript is the only mainstream language with prototype-based in
     var tomCruise = new Actor('Tom Cruise')
     tomCruise.hello()
     ~~~
+
 ### Modules 
 Importing is done via the `import ... from ...` construct:
 
@@ -229,6 +230,187 @@ The use case of `setTimeout(() => {}), 0)` is to call a function, but execute it
 ### Map datastructure
 ECMAScript 6 (also called ES2015) introduced the `Map` data structure to the JavaScript world, along with `Set`. Before its introduction, people generally used objects as maps, by associating some object or value to a specific key value:
 
+A WeakMap is a special kind of map.
+
+In a map object, items are never garbage collected. A WeakMap instead lets all its items be freely garbage collected. Every key of a WeakMap is an object. When the reference to this object is lost, the value can be garbage collected.
+
+Here are the main differences:
+    - you cannot iterate over the keys or values (or key-values) of a WeakMap   
+    - you cannot clear all items from a WeakMap     
+    - you cannot check its size     
+
+### Set datastructure
+A Set data structure allows to add data to a container, a collection of objects or primitive types (strings, numbers or booleans), and you can think of it as a Map where values are used as map keys, with the map value always being a boolean true.
+
+A WeakSet is a special kind of Set.
+
+In a Set, items are never garbage collected. A WeakSet instead lets all its items be freely garbage collected. Every key of a WeakSet is an object. When the reference to this object is lost, the value can be garbage collected.
+
+
+### Arrays
+
+* Use New Syntax
+> const a = []
+    const a = [1, 2, 3]
+    const a = Array.of(1, 2, 3)
+    const a = Array(6).fill(1) //init an array of 6 items of value 1
+
+Don’t use the old syntax (just use it for typed arrays)
+const a = new Array() //never use
+const a = new Array(1, 2, 3) //never use
+
+`const l = a.length` //get length
+
+* Iterating the array
+`a.every(f)` - Iterates a until f() returns false
+`a.some(f)` - Iterates a until f() returns true
+`const b = a.map(f)` - Iterates a and builds a new array with the result of executing f() on each a element
+`const b = a.filter(f)` - Iterates a and builds a new array with elements of a that returned true when executing f() on each a element
+
+`a.reduce((accumulator, currentValue, currentIndex, array) => {//...}, initialValue)` - executes a callback function on all the items of the array and allows to progressively compute a result. If initialValue is specified, accumulator in the first iteration will equal to that value.
+
+`a.forEach(f)` - Iterates f on a without a way to stop
+
+`for (let v of a) {console.log(v)}` - for..of
+
+`for (let i = 0; i < a.length; i += 1) { a[i]}` - Iterates a, can be stopped using return or break and an iteration can be skipped using continue
+
+
+* iterator
+Getting the iterator from an array returns an iterator of values
+~~~js
+    const a = [1, 2, 3]
+    let it = a[Symbol.iterator]()
+    console.log(it.next().value) //1
+    console.log(it.next().value) //2
+~~~
+`.entries()` returns an iterator of key/value pairs
+
+~~~js
+    let it = a.entries()
+    console.log(it.next().value) //[0, 1]
+    console.log(it.next().value) //[1, 2]
+    console.log(it.next().value) //[2, 3]
+~~~
+
+`.keys()` allows to iterate on the keys:
+~~~js
+let it = a.keys()
+
+console.log(it.next().value) //0
+console.log(it.next().value) //1
+console.log(it.next().value) //2
+~~~
+
+.next() returns undefined when the array ends. You can also detect if the iteration ended by looking at it.next() which returns a value, done pair. done is always false until the last element, which returns true.
+
+
+* Adding/Removing to an array
+add 
+- at the end - `a.push(4)`
+- at the beginning - `a.unshift(0)` , `a.unshift(-2, -1)`
+
+remove
+- from the end - `a.pop()`
+- from beginning - `a.shift()`
+- at a random position - 
+    `a.splice(0, 2)` // get the first 2 items
+    `a.splice(3, 2) `// get the  2 items starting from index 3
+
+Do not use `remove()` as it leaves behind `undefined` values.
+
+remove and insert in place 
+`a.splice(2, 3, 2, 'a', 'b')` 
+// removes 3 items starting from index 2, and adds 2 items, 
+// still starting from index 2
+
+* Join multiple arrays
+~~~js
+const a = [1, 2]
+const b = [3, 4]
+a.concat(b) // 1, 2, 3, 4
+~~~
+
+* Lookup the array for a specific element
+`a.indexOf()` - Returns the index of the first matching item found, or -1 if not found 
+
+`a.lastIndexOf()` - Returns the index of the last matching item found, or -1 if not found
+
+Returns the first item that returns true. Returns undefined if not found.
+~~~js
+a.find((element, index, array) => {
+  //return true or false
+})
+
+a.find(x => x.id === my_id) //returns the first element in the array that has id === my_id.
+
+~~~
+
+findIndex returns the index of the first item that returns true, and if not found, it returns undefined:
+~~~js
+a.findIndex((element, index, array) => {
+  //return true or false
+})
+~~~
+
+
+`a.includes(value)` - Returns true if a contains value.
+
+`a.includes(value, i)` - Returns true if a contains value after the position i.
+
+`a.slice()` - Get a portion of array
+
+* Sort the array
+
+Sort alphabetically (by ASCII value - 0-9A-Za-z)
+~~~js
+const a = [1, 2, 3, 10, 11]
+a.sort() //1, 10, 11, 2, 3
+
+const b = [1, 'a', 'Z', 3, 2, 11]
+b = b.sort() //1, 11, 2, 3, Z, a
+~~~
+
+Sort by a custom function
+~~~js
+const a = [1, 10, 3, 2, 11]
+a.sort((a, b) => a - b) //1, 2, 3, 10, 11
+~~~
+
+`a.reverse()` - reverse the order of an array
+
+* Get string representation
+`a.toString()` - Returns a string representation of an array
+`a.join()` - Returns a string concatenation of the array elements. Pass a parameter to add a custom separator:
+
+* Copy an existing array by value
+`const b = Array.from(a)`
+`const b = Array.of(...a)`
+
+* Copy just some values from an existing array
+`const b = Array.from(a, x => x % 2 == 0)` 
+
+* Copy portions of an array into the array itself, in other positions
+~~~js
+const a = [1, 2, 3, 4]
+a.copyWithin(0, 2) // [3, 4, 3, 4]
+const b = [1, 2, 3, 4, 5]
+b.copyWithin(0, 2) // [3, 4, 5, 4, 5]
+//0 is where to start copying into,
+// 2 is where to start copying from
+const c = [1, 2, 3, 4, 5]
+c.copyWithin(0, 2, 4) // [3, 4, 3, 4, 5]
+//4  is an end index
+~~~
+
+
+
+
+
+
+
+
+
 
 
 ### Array Functions - map, filter, reduce, find
@@ -312,3 +494,25 @@ To create a new command 'goodbye'
     `@oclif/test` - Test helper for oclif.    
 
 
+## CSV
+<!-- https://csv.js.org -->
+There are multiple APIs available. Under the hood, they are all based on the same implementation. The `stream API` might not be the most pleasant API to use but is scalable. Use the callback style API or the sync API for simplicity, readability and convenience if you are sure that your datasets fit in memory.
+
+* csv-generate
+    - Run `npm install csv` to install the full csv module or run `npm install csv-generate` if you are only interested by the CSV generator.
+
+    - This package provides a flexible generator of CSV strings and Javascript objects implementing the Node.js stream.Readable API. It may be used to generate random or user-defined datasets.
+
+    - Stream API : The main module of this package implements the native Node.js readable stream API. This is the recommended approach if you need a maximum of power. It ensures scalability by treating your data as an input stream. It is however more verbose and harder to use.
+    The signature is `const stream = generate([options])`
+    
+    - Callback API
+    The generated output is passed to the callback in the second argument. This mode implies that the overall dataset will be stored in memory.
+    The signature is `const stream = generate([options], callback)`.
+
+    - Sync API
+    The generated output is returned. Like with the callback API, this mode implies that the overall dataset will be stored in memory.
+
+    The module to require is csv-transform/lib/sync and the signature is `const records = generate([options])`.
+
+* csv-parse   
