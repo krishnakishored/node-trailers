@@ -49,7 +49,7 @@ JavaScript evolved in a very short time from callbacks to promises (ES2015), and
 
 * An async function returns a promise
 * `Prepending the async keyword to any function means that the function will return a promise`. Even if it’s not doing so explicitly, it will internally make it return a promise.
-
+----
 ### Classes
 Traditionally JavaScript is the only mainstream language with prototype-based inheritance. 
 - Classes have a special method called `constructor` which is called when a class is initialized via `new`. The parent class can be referenced using `super`().
@@ -75,7 +75,7 @@ Traditionally JavaScript is the only mainstream language with prototype-based in
     var tomCruise = new Actor('Tom Cruise')
     tomCruise.hello()
     ~~~
-
+----
 ### Modules 
 Importing is done via the `import ... from ...` construct:
 
@@ -92,7 +92,7 @@ You can write modules and export anything to other modules using the `export` ke
 export var foo = 2
 export function bar() { /* ... */ }
 ~~~
-
+----
 ### Generators
 Generators are a special kind of function with the ability to pause itself, and resume later, allowing other code to run in the meantime.
 
@@ -100,7 +100,7 @@ Generators are a special kind of function with the ability to pause itself, and 
 - All this is done with a single, simple keyword: `yield`. When a generator contains that keyword, the execution is halted.
 - A generator can contain many yield keywords, thus halting itself multiple times, and it’s identified by the `*function`
 
-
+----
 ### let and const
 - `var` is traditionally function scoped.
 - `let` is a new variable declaration which is block scoped.
@@ -108,7 +108,7 @@ Generators are a special kind of function with the ability to pause itself, and 
 
 - `const` is just like let, but immutable.
 
-
+----
 ### Template Literals
 - Template literals are a new syntax to create strings.
 - They provide a way to embed expressions into strings, effectively inserting the values, by using the `${a_variable}` syntax. Strings can span over multiple lines
@@ -146,7 +146,7 @@ const x = {
 }
 x.test() //zoox
 ~~~
-
+----
 ### The spread operator
 You can expand an array, an object or a string using the spread operator `...`
 - Using strings, the spread operator creates an array with each char in the string:
@@ -169,7 +169,7 @@ const a = [1, 2]
 f(...a)
 ~~~
 
-
+----
 ### Destructuring assignments
 Given an object, you can extract just some values and put them into named variables:
 
@@ -190,41 +190,7 @@ const [first, second] = a
 const [first, second, , , fifth] = a
 ~~~
 
-
-### The Node.js Event Loop
-It explains how Node can be asynchronous and have non-blocking I/O
-The Node.js JavaScript code runs on a single thread. There is just one thing happening at a time
-
-- The environment manages multiple concurrent event loops, to handle API calls for example. 
-  Web Workers run in their own event loop as well.
-- Almost all the I/O primitives in JavaScript are non-blocking. Network requests, filesystem operations, and so on. Being blocking is the exception, and this is why JavaScript is based so much on callbacks, and more recently on promises and async/await.
-- The event loop continuously checks the call stack to see if there’s any function that needs to run. While doing so, it adds any function call it finds to the call stack and executes each one in order.
-
-- How to defer a function until the stack is clear
-The use case of `setTimeout(() => {}), 0)` is to call a function, but execute it once every other function in the code has executed. passing '0' as timer instructs the setTimeout() to run immediately
-
-- The Message Queue
-    When setTimeout() is called, the Browser or Node.js start the timer. Once the timer expires, in this case immediately as we put 0 as the timeout, the callback function is put in the Message Queue.
-
-    The Message Queue is also where user-initiated events like click or keyboard events, or fetch responses are queued before your code has the opportunity to react to them. Or also DOM events like onLoad.
-
-    __The loop gives priority to the call stack, and it first processes everything it finds in the call stack, and once there’s nothing in there, it goes to pick up things in the message queue.__
-
-    We don’t have to wait for functions like setTimeout, fetch or other things to do their own work, because they are provided by the browser, and they live on their own threads. For example, if you set the setTimeout timeout to 2 seconds, you don’t have to wait 2 seconds - the wait happens elsewhere.
-
-
-- ES6 Job Queue
-
-    ECMAScript 2015 introduced the concept of the Job Queue, which is used by Promises (also introduced in ES6/ES2015). It’s a way to execute the result of an async function as soon as possible, rather than being put at the end of the call stack.
-
-    Promises that resolve before the current function ends will be executed right after the current function.
-
-    That’s a big difference between Promises (and Async/await, which is built on promises) and plain old asynchronous functions through setTimeout() or other platform APIs.
-
-
-
-
-
+-----
 
 
 ### Map datastructure
@@ -403,16 +369,6 @@ c.copyWithin(0, 2, 4) // [3, 4, 3, 4, 5]
 //4  is an end index
 ~~~
 
-
-
-
-
-
-
-
-
-
-
 ### Array Functions - map, filter, reduce, find
 `map` returns an array with the same length,        
     - _Execute something on every element with map_       
@@ -423,8 +379,58 @@ c.copyWithin(0, 2, 4) // [3, 4, 3, 4, 5]
     - _`filter()` and `reduce()` will iterate over all the array items, while `find()` will be faster_
 
 -----
+### The Node.js Event Loop
+It explains how Node can be asynchronous and have non-blocking I/O
+The Node.js JavaScript code runs on a single thread. There is just one thing happening at a time
 
-## Oclif
+- The environment manages multiple concurrent event loops, to handle API calls for example. 
+  Web Workers run in their own event loop as well.
+- Almost all the I/O primitives in JavaScript are non-blocking. Network requests, filesystem operations, and so on. Being blocking is the exception, and this is why JavaScript is based so much on callbacks, and more recently on promises and async/await.
+- The event loop continuously checks the call stack to see if there’s any function that needs to run. While doing so, it adds any function call it finds to the call stack and executes each one in order.
+
+- How to defer a function until the stack is clear
+The use case of `setTimeout(() => {}), 0)` is to call a function, but execute it once every other function in the code has executed. passing '0' as timer instructs the setTimeout() to run immediately
+
+- The Message Queue
+    When setTimeout() is called, the Browser or Node.js start the timer. Once the timer expires, in this case immediately as we put 0 as the timeout, the callback function is put in the Message Queue.
+
+    The Message Queue is also where user-initiated events like click or keyboard events, or fetch responses are queued before your code has the opportunity to react to them. Or also DOM events like onLoad.
+
+    __The loop gives priority to the call stack, and it first processes everything it finds in the call stack, and once there’s nothing in there, it goes to pick up things in the message queue.__
+
+    We don’t have to wait for functions like setTimeout, fetch or other things to do their own work, because they are provided by the browser, and they live on their own threads. For example, if you set the setTimeout timeout to 2 seconds, you don’t have to wait 2 seconds - the wait happens elsewhere.
+
+
+- ES6 Job Queue
+
+    ECMAScript 2015 introduced the concept of the Job Queue, which is used by Promises (also introduced in ES6/ES2015). It’s a way to execute the result of an async function as soon as possible, rather than being put at the end of the call stack.
+
+    Promises that resolve before the current function ends will be executed right after the current function.
+
+    That’s a big difference between Promises (and Async/await, which is built on promises) and plain old asynchronous functions through setTimeout() or other platform APIs.
+
+-----
+### ExpressJS
+
+Express is a node.js Web Framework
+* When you listen for connections on a route in express, the callback function will be invoked on every network call with a Request object instance and a Response object instance
+
+-----
+
+### CURL
+
+sample curl commands 
+* GET 
+`curl "10.10.15.12:3000/?name=king&age=20"`   
+`curl "10.10.15.12:3000/time"` 
+
+* POST a json 
+`$ curl -X POST -H "Content-Type: application/json" -d @FILENAME DESTINATION`       
+`$ curl -X POST -H "Content-Type: application/json" -d '{"name":"abcd"}' 10.10.15.12:3000/form `  
+
+-----
+
+### Oclif
 oclif is a framework for building CLIs in Node. 
 With oclif you can create 2 different CLI types: single and multi.
 * Single CLIs are like ls or curl. They can accept arguments and flags. Single CLIs can optionally be just a single file.       
@@ -492,7 +498,7 @@ To create a new command 'goodbye'
     `@oclif/errors` - Renders and logs errors from commands.
     `@oclif/cli-ux` - Library for common CLI UI utilities.
     `@oclif/test` - Test helper for oclif.    
-
+-----
 
 ## CSV
 <!-- https://csv.js.org -->
@@ -516,3 +522,6 @@ There are multiple APIs available. Under the hood, they are all based on the sam
     The module to require is csv-transform/lib/sync and the signature is `const records = generate([options])`.
 
 * csv-parse   
+
+
+-----
