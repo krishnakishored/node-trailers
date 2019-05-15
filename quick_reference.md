@@ -50,6 +50,81 @@ JavaScript evolved in a very short time from callbacks to promises (ES2015), and
 * An async function returns a promise
 * `Prepending the async keyword to any function means that the function will return a promise`. Even if it’s not doing so explicitly, it will internally make it return a promise.
 ----
+
+### Streams
+* Node makes extensive use of streams as a data transfer mechanism.
+* Streams are a way to handle reading/writing files, network communications, or any kind of end-to-end information exchange in an efficient way.
+
+* Streams are not a concept unique to Node.js. They were introduced in the Unix operating system decades ago, and programs can interact with each other passing streams through the pipe operator (|).
+
+* For example, in the traditional way, when you tell the program to read a file, the file is read into memory, from start to finish, and then you process it. Using streams you read it piece by piece, processing its content without keeping it all in memory.
+
+* Due to their advantages, many Node.js core modules provide native stream handling capabilities, most notably:
+`process.stdin` returns a stream connected to stdin     
+`process.stdout` returns a stream connected to stdout       
+`process.stderr` returns a stream connected to stderr     
+`fs.createReadStream()` creates a readable stream to a file       
+`fs.createWriteStream()` creates a writable stream to a file      
+`net.connect()` initiates a stream-based connection       
+`http.request()` returns an instance of the http.ClientRequest class, which is a writable stream      
+`zlib.createGzip()` compress data using gzip (a compression algorithm) into a stream      
+`zlib.createGunzip()` decompress a gzip stream.       
+`zlib.createDeflate()` compress data using deflate (a compression algorithm) into a stream    
+`zlib.createInflate()` decompress a deflate stream        
+
+* Different types of streams      
+There are four classes of streams:
+
+`Readable`: a stream you can pipe from, but not pipe into (you can receive data, but not send data to it). When you push data into a readable stream, it is buffered, until a consumer starts to read the data.
+> A readable stream is an abstraction for a source from which data can be consumed. An example of that is the fs.createReadStream method.
+
+`Writable`: a stream you can pipe into, but not pipe from (you can send data, but not receive from it)
+> A writable stream is an abstraction for a destination to which data can be written. An example of that is the fs.createWriteStream method.
+
+`Duplex`: a stream you can both pipe into and pipe from, basically a combination of a Readable and Writable stream
+> A duplex streams is both Readable and Writable. An example of that is a TCP socket.
+
+`Transform`: a Transform stream is similar to a Duplex, but the output is a transform of its input
+> A transform stream is basically a duplex stream that can be used to modify or transform the data as it is written and read. An example of that is the zlib.createGzip stream to compress the data using gzip. You can think of a transform stream as a function where the input is the writable stream part and the output is readable stream part. You might also hear transform streams referred to as “through streams.”
+
+`All streams are instances of EventEmitter`. They emit events that can be used to read and write data. However, we can consume streams data in a simpler way using the pipe method.
+
+* `stream.pipe(res)`: the pipe() method is called on the file stream.  It takes the source, and pipes it into a destination. `readableSrc.pipe(writableDest)`         
+The pipe method is the easiest way to consume streams.   
+~~~js
+    readableSrc  
+        .pipe(transformStream1)  
+        .pipe(transformStream2)  
+        .pipe(finalWrtitableDest)  
+~~~
+
+You call it on the source stream, so in this case, the file stream is piped to the HTTP response. The return value of the pipe() method is the destination stream, which is a very convenient thing that lets us chain multiple pipe() calls:`$ src.pipe(dest1).pipe(dest2)` which is same as:
+`$ src.pipe(dest1)`
+`$ dest1.pipe(dest2)`
+
+~~~js
+//readable.pipe(writable)
+
+readable.on('data', (chunk) => {
+  writable.write(chunk);
+});
+readable.on('end', () => {
+  writable.end();
+});
+~~~
+
+The most important events on a readable stream are:
+The `data` event, which is emitted whenever the stream passes a chunk of data to the consumer.  The `end` event, which is emitted when there is no more data to be consumed from the stream.
+
+The most important events on a writable stream are:
+The `drain` event, which is a signal that the writable stream can receive more data.
+The `finish` event, which is emitted when all data has been flushed to the underlying system.
+
+
+
+
+
+----
 ### Classes
 Traditionally JavaScript is the only mainstream language with prototype-based inheritance. 
 - Classes have a special method called `constructor` which is called when a class is initialized via `new`. The parent class can be referenced using `super`().
