@@ -1,5 +1,114 @@
 ## JS quick reference
+----
+### NodeJs 
+* Allows you to build scalable network applications using JavaScript on the server-side
+* V8 JavaScript Runtime
+* What could you build :
+    - Websocket Server
+    - Fast File Upload Client
+    - Ad Server
+    - Any Real-Time Data Apps
+* NodeJs is not a Web Framework
+* JavaScript has certain characteristics that make it very different than other dynamic languages, namely that it has no concept of threads. Its model of concurrency is completely based around events.”
 
+* Similar to how DOM triggers events(click, submit, hover) & we can listen for those events, Many Objects in node emit events - net.Server(EventEmitter) emits request, fs.readStream emits data
+
+* exports defines what require returns
+
+* Global npm modules can’t be required
+* follow Semantic Versioning. http://semver.org  - (Major).(Minor).(Patch)
+* Express is Sinatra(ruby) inspired web development framework for Nodejs
+    - Easy route URLs to callbacks
+    - Middleware (from Connect)
+    - Envrironment based configuration
+    - Redirection helpers
+    - File Uploads
+----
+### Getting Started with nodejs
+1. node can be used with v8 (managed by google), chakra, spidermonkey
+1. Browser, DOM  api vs Node api (v8)
+1. Single threaded environment - but support async api
+1. REPL vs script execution mode
+1. WeakMap,Reflectm zlib, .. 
+1. IIFE - immediately invoked function expression `>require('module').wrapper`
+1. `export` alias module.exports - global mutable object
+1. node vs v8 apis
+1. `import` - `export` replaces `require`
+1. package.json 
+    "scripts":{}
+    "start": "node -r esm server.js"  ---> $ npm start
+    "prod_start": "NODE_ENV=production node -r esm server.js"  ---> npm run prod_start ---> yarn prod_start
+
+1. npx - npm execute
+    - install something and use it globally
+
+1. http
+    ~~~js
+    import http from 'http'
+    const server = http.createserver()
+    server.on('request',(req,res)=>{
+        console.log("request", req.url)
+        req.write('Hello HTTP') // hits twice from browser// for / & /favicon.png
+    })
+    server.listen(8080)
+
+    ~~~
+1. express
+    - wrapper around http
+    ~~~js
+    server = express()
+    server.get('/',()=>{
+        res.send()
+        res.sendFile()
+    })
+    ~~~
+1. import - statically evaluated
+   requore - dynamically evaluated
+   import() - gives back promise
+
+1. callbacks
+~~~js
+    import {exec} from `child_process`
+    exec('ls /', ()=>{})
+
+    //using promise
+    const main = async()=> {
+        const stdout = await exec ('ls /')
+    }
+
+    // `promisify` promise is resolved or rejected
+    import utils from 'utils'
+    ...
+    const execP = utils.promisify(exec)
+~~~
+
+#### Sample commands
+~~~js
+$ node -p "Math.random()" 
+$ node --v8-options
+$ node -p process // interface to the os
+$ node -p process.env // all the environment variables
+$ node -p "require('module').wrapper" // [ '(function (exports, require, module, __filename, __dirname) { ','\n});' ]
+$ nvm use system
+$ node --inspect-br 
+// NODE_DEBUG, NODE_PATH
+export default {} ----> module.export
+import m1 form './m1.js' ---> require('./m1')
+console.log(http.STATUS_CODES)
+$ npm i esm 
+$ node -r esm m1.js (request a module before execution)
+$ npm i lodash // ---> creates folder in node_modules
+$ npm publish  //---->  for publish to npm registry
+$ npm i expressjs/express // ---> installs from github 
+$ npm i -g eslint // ---> global installed
+$ npm i -D eslint // ---> installs under devdependencies
+$ npm uninstall lodash //---> remove from node_modules
+$ npm i -D nodemon
+
+~~~    
+
+
+----
 ### JavaScript Closures
 When a function is run, it’s `executed with the scope that was in place when it was defined`, and *__not__ with the state that’s in place when it is executed*.
 - The scope basically is the set of variables which are visible.
@@ -506,18 +615,19 @@ sample curl commands
 -----
 
 ### Oclif
-oclif is a framework for building CLIs in Node. 
-With oclif you can create 2 different CLI types: single and multi.
+oclif is a framework for building CLIs in Node.  
+With oclif you can create 2 different CLI types: single and multi.  
 * Single CLIs are like ls or curl. They can accept arguments and flags. Single CLIs can optionally be just a single file.       
 `$ npm install -g oclif`        
 `$ npm update -g oclif` (to get the newer releases of the generator)        
-        
-    `$ npx oclif single mynewcli`   
+* Multi CLIs are like git or heroku. They have subcommands that are themselves single CLIs. In the package.json there is a field oclif.commands that points to a directory. Multi-command CLIs may also include plugins.        
+`$ npx oclif multi mynewmulticli`
+
+* The Oclif CLI, has two possible ways to generate CLI projects, one is `npx oclif single mynewcli` and the second one is `npx oclif multi mynewcli`        
+     
         npx is included in npm and automatically runs and installs the oclif generator.         
         To run `$ mynewcli` instead of `$ ./bin/run` you'll need to link your CLI locally using `$ npm link`
 
-* Multi CLIs are like git or heroku. They have subcommands that are themselves single CLIs. In the package.json there is a field oclif.commands that points to a directory. Multi-command CLIs may also include plugins.        
-`$ npx oclif multi mynewmulticli`
 
 * Generator Commands
     - `$ oclif command NAME` add a command to an existing CLI or plugin     
@@ -597,6 +707,312 @@ There are multiple APIs available. Under the hood, they are all based on the sam
     The module to require is csv-transform/lib/sync and the signature is `const records = generate([options])`.
 
 * csv-parse   
+-----
+#### A Node.js application consists of the following three important components −
 
+* Import required modules − We use the 'require' directive to load Node.js modules.
+
+* Create server − A server which will listen to client's requests similar to Apache HTTP Server.
+
+* Read request and return response − The server created in an earlier step will read the HTTP request made by the client which can be a browser or a console and return the response.
+
+#### REPL stands for Read Eval Print Loop 
+
+#### Attributes of Package.json
+    name − name of the package
+    version − version of the package
+    description − description of the package
+    homepage − homepage of the package
+    author − author of the package
+    contributors − name of the contributors to the package
+    dependencies − list of dependencies. NPM automatically installs all the dependencies mentioned here in the node_module folder of the package.
+    repository − repository type and URL of the package
+    main − entry point of the package
+    keywords − keywords
+
+
+`Uninstalling a Module`
+$ npm uninstall express
+Once NPM uninstalls the package, you can verify it by looking at the content of /node_modules/ directory or type the following command − $ npm ls
+
+`Updating a Module`
+Update package.json and change the version of the dependency to be updated and run the following command.
+$ npm update express
+
+`Search a Module`
+Search a package name using NPM.
+$ npm search express
+
+`Create a Module`
+$  npm init
+
+`Register yourself with NPM repository site using a valid email address`
+$  npm adduser 
+
+`Publish`
+$ npm publish
+
+* Callback is an asynchronous equivalent for a function.
+
+
+#### Event-driven programming - 
+* Every API of Node.js is asynchronous and being single-threaded, they use async    function calls to maintain concurrency. 
+* Node uses observer pattern. Node thread keeps an event loop and whenever a task gets completed, it fires the corresponding event which signals the event-listener function to execute.
+
+* In an event-driven application, there is generally a main loop that listens for events, and then triggers a callback function when one of those events is detected.
+
+* Import events module
+  `var events = require('events');`
+
+* create an eventEmitter object
+  `var eventEmitter = new events.EventEmitter();`
+
+* Bind event and event  handler as follows
+  `eventEmitter.on('eventName',eventHandler);`
+
+* Fire an event
+  `eventEmitter.emit('eventName');`
+
+* In Node Application, any async function accepts a callback as the last parameter and a callback function accepts an error as the first parameter. 
+
+* All objects which emit events are the instances of events.EventEmitter.
+
+#### EventEmitter Class
+* EventEmitter class lies in the events module.
+* When an EventEmitter instance faces any error, it emits an 'error' event. When a new listener is added, 'newListener' event is fired and when a listener is removed, 'removeListener' event is fired.
+
+`Methods`
+1. addListener(event, listener)
+Adds a listener at the end of the listeners array for the specified event. No checks are made to see if the listener has already been added. Multiple calls passing the same combination of event and listener will result in the listener being added multiple times. Returns emitter, so calls can be chained.
+
+2. on(event, listener)
+Adds a listener at the end of the listeners array for the specified event. No checks are made to see if the listener has already been added. Multiple calls passing the same combination of event and listener will result in the listener being added multiple times. Returns emitter, so calls can be chained.
+
+3. once(event, listener)
+Adds a one time listener to the event. This listener is invoked only the next time the event is fired, after which it is removed. Returns emitter, so calls can be chained.
+
+4. removeListener(event, listener)
+Removes a listener from the listener array for the specified event. Caution − It changes the array indices in the listener array behind the listener. removeListener will remove, at most, one instance of a listener from the listener array. If any single listener has been added multiple times to the listener array for the specified event, then removeListener must be called multiple times to remove each instance. Returns emitter, so calls can be chained.
+
+5. removeAllListeners([event])
+Removes all listeners, or those of the specified event. It's not a good idea to remove listeners that were added elsewhere in the code, especially when it's on an emitter that you didn't create (e.g. sockets or file streams). Returns emitter, so calls can be chained.
+
+6. setMaxListeners(n)
+By default, EventEmitters will print a warning if more than 10 listeners are added for a particular event. This is a useful default which helps finding memory leaks. Obviously not all Emitters should be limited to 10. This function allows that to be increased. Set to zero for unlimited.
+
+7. listeners(event)
+Returns an array of listeners for the specified event.
+
+8. emit(event, [arg1], [arg2], [...])
+Execute each of the listeners in order with the supplied arguments. Returns true if the event had listeners, false otherwise.
+
+`Class Methods`
+* listenerCount(emitter, event)
+    Returns the number of listeners for a given event.
+
+`Events`
+
+1. newListener
+    - event − String: the event name
+    - listener − Function: the event handler function
+    This event is emitted any time a listener is added. When this event is triggered, the listener may not yet have been added to the array of listeners for the event.
+
+2. removeListener
+    - event − String The event name
+    - listener − Function The event handler function
+    This event is emitted any time someone removes a listener. When this event is triggered, the listener may not yet have been removed from the array of listeners for the event.
+
+#### Buffers
+* Node provides Buffer class which provides instances to store raw data similar to an array of integers but corresponds to a raw memory allocation outside the V8 heap.
+* Buffer class is a global class that can be accessed in an application without importing the buffer module.
+
+`Writing to buffer`
+  - buf.write(string[, offset][, length][, encoding])
+
+  string − This is the string data to be written to buffer.
+  offset − This is the index of the buffer to start writing at. Default value is 0.
+  length − This is the number of bytes to write. Defaults to buffer.length.
+  encoding − Encoding to use. 'utf8' is the default encoding.
+
+  This method returns the number of octets written. If there is not enough space in the buffer to fit the entire string, it will write a part of the string.
+
+`Reading from Buffers`
+  - buf.toString([encoding][, start][, end])
+  encoding − Encoding to use. 'utf8' is the default encoding.
+  start − Beginning index to start reading, defaults to 0.
+  end − End index to end reading, defaults is complete buffer.
+
+  This method decodes and returns a string from buffer data encoded using the specified character set encoding.
+
+`Convert to JSON`
+  - buf.toJSON()
+  
+  This method returns a JSON-representation of the Buffer instance.
+
+`Concatenate Buffers`
+  - Buffer.concat(list[, totalLength])
+  list − Array List of Buffer objects to be concatenated.
+  totalLength − This is the total length of the buffers when concatenated.
+  
+  This method returns a Buffer instance.
+
+`Compare Buffers`
+  - buf.compare(otherBuffer);
+  otherBuffer − This is the other buffer which will be compared with buf
+
+  Returns a number indicating whether it comes before or after or is the same as the otherBuffer in sort order.
+
+`Copy Buffer`
+  - buf.copy(targetBuffer[, targetStart][, sourceStart][, sourceEnd])
+  targetBuffer − Buffer object where buffer will be copied.
+  targetStart − Number, Optional, Default: 0
+  sourceStart − Number, Optional, Default: 0
+  sourceEnd − Number, Optional, Default: buffer.length
+
+  No return value. Copies data from a region of this buffer to a region in the target buffer even if the target memory region overlaps with the source. If undefined, the targetStart and sourceStart parameters default to 0, while sourceEnd defaults to buffer.length.
+
+`Slice Buffer`
+  - buf.slice([start][, end])
+  start − Number, Optional, Default: 0
+  end − Number, Optional, Default: buffer.length
+
+  Returns a new buffer which references the same memory as the old one, but offset and cropped by the start (defaults to 0) and end (defaults to buffer.length) indexes. Negative indexes start from the end of the buffer.
+
+`Buffer Length`
+  - buf.length;
+  Returns the size of a buffer in bytes.
+
+#### Streams
+Streams are objects that let you read data from a source or write data to a destination in continuous fashion. 
+In Node.js, there are four types of streams −
+- Readable − Stream which is used for read operation.
+- Writable − Stream which is used for write operation.
+- Duplex − Stream which can be used for both read and write operation.
+- Transform − A type of duplex stream where the output is computed based on input.
+
+Each type of Stream is an EventEmitter instance and throws several events at different instance of times. 
+For example, some of the commonly used events are −
+  data − This event is fired when there is data is available to read.
+  end − This event is fired when there is no more data to read.
+  error − This event is fired when there is any error receiving or writing data.
+  finish − This event is fired when all the data has been flushed to underlying system.
+
+`Piping the Streams`
+Piping is a mechanism where we provide the output of one stream as the input to another stream. 
+It is normally used to get data from one stream and to pass the output of that stream to another stream. 
+There is no limit on piping operations.
+
+`Chaining the streams`
+Chaining is a mechanism to connect the output of one stream to another stream and create a chain of multiple stream operations. It is normally used with piping operations. 
+
+#### Global Objects
+Node.js global objects are global in nature and they are available in all modules. We do not need to include these objects in our application, rather we can use them directly.
+
+`__filename`
+The __filename represents the filename of the code being executed. This is the resolved absolute path of this code file. For a main program, this is not necessarily the same filename used in the command line. The value inside a module is the path to that module file.
+
+`__dirname`
+The __dirname represents the name of the directory that the currently executing script resides in.
+
+`setTimeout(cb, ms)`
+The setTimeout(cb, ms) global function is used to run callback cb after at least ms milliseconds. The actual delay depends on external factors like OS timer granularity and system load. A timer cannot span more than 24.8 days.
+
+This function returns an opaque value that represents the timer which can be used to clear the timer.
+
+`clearTimeout(t)`
+The clearTimeout(t) global function is used to stop a timer that was previously created with setTimeout(). Here t is the timer returned by the setTimeout() function.
+
+`setInterval(cb, ms)`
+The setInterval(cb, ms) global function is used to run callback cb repeatedly after at least ms milliseconds. The actual delay depends on external factors like OS timer granularity and system load. A timer cannot span more than 24.8 days.
+
+This function returns an opaque value that represents the timer which can be used to clear the timer using the function clearInterval(t).
+
+`Process`
+Used to get information on current process. Provides multiple events related to process activities.
+
+#### Frequently used utility modules
+`OS `: Provides basic operating-system related utility functions.
+
+`Path`: Provides utilities for handling and transforming file paths.
+
+`Net`: Provides both servers and clients as streams. Acts as a network wrapper.
+
+`DNS Module`: Provides functions to do actual DNS lookup as well as to use underlying operating system name resolution functionalities.
+
+`Domain Module`: Provides ways to handle multiple different I/O operations as a single group.
+
+
+
+#### Web Application Architecture
+
+A Web application is usually divided into four layers −
+* Client − This layer consists of web browsers, mobile browsers or applications which can make HTTP requests to the web server.
+* Server − This layer has the Web server which can intercept the requests made by the clients and pass them the response.
+* Business − This layer contains the application server which is utilized by the web server to do the required processing. This layer interacts with the data layer via the database or some external programs.
+* Data − This layer contains the databases or any other source of data.
+
+#### RESTful API
+REST stands for REpresentational State Transfer. REST is web standards based architecture and uses HTTP Protocol.
+
+A REST Server simply provides access to resources and REST client accesses and modifies the resources using HTTP protocol. Here each resource is identified by URIs/ global IDs. REST uses various representation to represent a resource like text, JSON, XML but JSON is the most popular one.
+
+Following four HTTP methods are commonly used in REST based architecture.
+* GET - This is used to provide a read only access to a resource.
+* PUT - This is used to create a new resource.
+* DELETE - This is used to remove a resource.
+* POST - This is used to update a existing resource or create a new resource.
+
+`RESTful Web Services`
+A web service is a collection of open protocols and standards used for exchanging data between applications or systems. 
+Software applications written in various programming languages and running on various platforms can use web services to exchange data over computer networks like the Internet in a manner similar to inter-process communication on a single computer. 
+This interoperability (e.g., communication between Java and Python, or Windows and Linux applications) is due to the use of open standards.
+
+Web services based on REST Architecture are known as RESTful web services. These webservices use HTTP methods to implement the concept of REST architecture. 
+A RESTful web service usually defines a URI, Uniform Resource Identifier a service, which provides resource representation such as JSON and set of HTTP Methods.
+
+... 
+
+#### Scaling Application
+Node.js runs in a single-thread mode, but it uses an event-driven paradigm to handle concurrency. It also facilitates creation of child processes to leverage parallel processing on multi-core CPU based systems.
+
+....
+
+#### File System
+Node implements File I/O using simple wrappers around standard POSIX functions.
+Every method in the fs module has synchronous as well as asynchronous forms. Asynchronous methods take the last parameter as the completion function callback and the first parameter of the callback function as error. 
+
+...
+
+
+#### Express
+Express is a minimal and flexible Node.js web application framework that provides a robust set of features to develop web and mobile applications. It facilitates the rapid development of Node based Web applications.
+
+* Allows to set up middlewares to respond to HTTP Requests.
+* Defines a routing table which is used to perform different actions based on HTTP Method and URL.
+* Allows to dynamically render HTML Pages based on passing arguments to templates.
+
+ 
+Install the following important modules along with express −
+
+* body-parser − This is a node.js middleware for handling JSON, Raw, Text and URL encoded form data.
+
+* cookie-parser − Parse Cookie header and populate req.cookies with an object keyed by the cookie names.
+
+* multer − This is a node.js middleware for handling multipart/form-data.
+
+Express application uses a callback function whose parameters are request and response objects.
+    app.get('/', function (req, res) {
+      // --
+    })
+
+  `Request Object` − The request object represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on.
+  `Response Object` − The response object represents the HTTP response that an Express app sends when it gets an HTTP request.
+
+  You can print req and res objects which provide a lot of information related to HTTP request and response including cookies, sessions, URL, etc.
 
 -----
+
+
+### References:
+1. https://dev.to/fedekau/building-awesome-clis-with-javascript-and-oclif-291o
+1. https://www.youtube.com/watch?v=gG3pytAY2MY&list=PLWKjhJtqVAbmGQoa3vFjeRbRADAOC9drk&index=8
