@@ -1,0 +1,150 @@
+{
+	"info": {
+		"_postman_id": "ec73e4ae-d606-4164-8624-1ee6a6efeaa1",
+		"name": "AMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Media Asset",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ams_url}}/create-media-assset",
+					"host": [
+						"{{ams_url}}"
+					],
+					"path": [
+						"create-media-assset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Default AMS Resources",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ingest_url\" : \"\",    \n    \"streaming_url\" : \"\",\n    \"live_event_name\" : \"\", \n    \"asset_name\" : \"\",\n    \"live_output_name\" : \"\",\n    \"stream_locator_name\" : \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ams_url}}/create-default-ams-resources",
+					"host": [
+						"{{ams_url}}"
+					],
+					"path": [
+						"create-default-ams-resources"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch Streaming URL",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{ams_url}}/get-live-stream-url/inseego5g360StreamLocator-1",
+					"host": [
+						"{{ams_url}}"
+					],
+					"path": [
+						"get-live-stream-url",
+						"inseego5g360StreamLocator-1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create LiveStream",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"cameraName\":\"AzureAICamera\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ams_url}}/live-stream/",
+					"host": [
+						"{{ams_url}}"
+					],
+					"path": [
+						"live-stream",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "HOME",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ams_url}}",
+					"host": [
+						"{{ams_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "stop-live-stream",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{ams_url}}/stop-live-stream/:liveEventName",
+					"host": [
+						"{{ams_url}}"
+					],
+					"path": [
+						"stop-live-stream",
+						":liveEventName"
+					],
+					"variable": [
+						{
+							"key": "liveEventName",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,0 +1,465 @@
+{
+	"info": {
+		"_postman_id": "f9ab8712-693c-46b7-a061-199eef4d517f",
+		"name": "Azure AI Camera",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"user_name\": \"Kishore\",\n\t\"user_password\": \"Kishore\",\n\t\"user_role_id\":1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{aicamserver_baseurl}}/users",
+					"host": [
+						"{{aicamserver_baseurl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read All Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{aicamserver_baseurl}}/users",
+					"host": [
+						"{{aicamserver_baseurl}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read User by id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"5d9334ee87b18e76db8f6f23\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{aicamserver_baseurl}}/users/5d9486e3796d1fb520342396",
+					"host": [
+						"{{aicamserver_baseurl}}"
+					],
+					"path": [
+						"users",
+						"5d9486e3796d1fb520342396"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read All MemberCamGroups of a User",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"user_name\":\"Kishore\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{aicamserver_baseurl}}/users/members",
+					"host": [
+						"{{aicamserver_baseurl}}"
+					],
+					"path": [
+						"users",
+						"members"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User by id",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"role\":\"1\"\n}\t",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{aicamserver_baseurl}}/users/5d88431707f67e092f5302aa",
+					"host": [
+						"{{aicamserver_baseurl}}"
+					],
+					"path": [
+						"users",
+						"5d88431707f67e092f5302aa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "HOME",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{aicamserver_baseurl}}/",
+					"host": [
+						"{{aicamserver_baseurl}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Cameragroup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"cameragroup_name\": \"Hitech City2\",\n\t\"registered_user_name\":\"Kishore\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{aicamserver_baseurl}}/cameragroups",
+					"host": [
+						"{{aicamserver_baseurl}}"
+					],
+					"path": [
+						"cameragroups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read All Cameragroups",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{aicamserver_baseurl}}/cameragroups",
+					"host": [
+						"{{aicamserver_baseurl}}"
+					],
+					"path": [
+						"cameragroups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read All MemberCams in a group",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"cameragroup_name\":\"Banjara Hills\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{aicamserver_baseurl}}/cameragroups/members",
+					"host": [
+						"{{aicamserver_baseurl}}"
+					],
+					"path": [
+						"cameragroups",
+						"members"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read Cameragroup by id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"5d8497f5b9018c60abac5bfc\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{aicamserver_baseurl}}/cameragroups/5d932faa478dad71310c0275",
+					"host": [
+						"{{aicamserver_baseurl}}"
+					],
+					"path": [
+						"cameragroups",
+						"5d932faa478dad71310c0275"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Camera",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"camera_name\": \"AzureAICamera2\",\n\t\"registered_cameragroup_name\": \"Banjara Hills\",\n\t\"registered_user_name\":\"Tarani\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{aicamserver_baseurl}}/cameras",
+					"host": [
+						"{{aicamserver_baseurl}}"
+					],
+					"path": [
+						"cameras"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read All Cameras",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{aicamserver_baseurl}}/cameras",
+					"host": [
+						"{{aicamserver_baseurl}}"
+					],
+					"path": [
+						"cameras"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read Camera by id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"5d8497f5b9018c60abac5bfc\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{aicamserver_baseurl}}/cameras/5d948d31cd9cc0b9de024729",
+					"host": [
+						"{{aicamserver_baseurl}}"
+					],
+					"path": [
+						"cameras",
+						"5d948d31cd9cc0b9de024729"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Camera AMS Resources",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"camera_id\": \"5d948d31cd9cc0b9de024729\",\n\t\"ams_resources\": {\n\t\t\"ingest_url\" : \"http://ingesturl/02\",    \n\t    \"streaming_url\" : \"http://streamingurl/02\",\n\t    \"live_event_name\" : \"\", \n\t    \"asset_name\" : \"\",\n\t    \"live_output_name\" : \"\",\n\t    \"stream_locator_name\" : \"\"\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{aicamserver_baseurl}}/cameras/ams",
+					"host": [
+						"{{aicamserver_baseurl}}"
+					],
+					"path": [
+						"cameras",
+						"ams"
+					]
+				},
+				"description": "Add the ams resources w.r.t cameraId"
+			},
+			"response": []
+		},
+		{
+			"name": "Device stream URL",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\n\t\"device_id\":\"MSIoT0DBA07\",\n\t\"protocol\": \"http\"\n\t\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{aicamserver_baseurl}}/devices/streamurl",
+					"host": [
+						"{{aicamserver_baseurl}}"
+					],
+					"path": [
+						"devices",
+						"streamurl"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
