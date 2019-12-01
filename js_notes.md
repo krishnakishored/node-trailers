@@ -24,6 +24,54 @@
     - Redirection helpers
     - File Uploads
 ----
+### Advanced nodejs
+1. `process.binding`() - Connects JS and C++ functions. e.g pbkdf2(lib/)--> PBKDF2(src/node_crypto.cc)
+1. `V8` - Converts values between JS and C++ world
+1. `libuv` - gives node easy access to underlying OS
+    - Uses Thread Pool(of 4 threads) to execute computation intensive tasks
+    - `process.env.UV_THREADPOOL_SIZE` = 2 
+    - Functions in node std library that use the threadpool - All 'fs' modules functions.Some crypto. OS dependent
+    - Tasks running on threadpool are the 'pendingOperations' in our example
+1. Process - instance of a running program. Process have multiple threads
+   OS Scheduler - decides which thread should be processed
+1. Node Event Loop - a control structure that decides what our one thread should be doing at any given point of time
+    - Node Event Loop is single threaded. 
+    - But some of Node Framework/Std Lib are not single threaded. e.g. run twice - crypto.pbkdf2(..)
+    ~~~js
+    // node myFile.js
+
+    const pendingTimers = [];
+    const pendingOSTasks = [];
+    const pendingOperations = [];
+
+
+    myFile.runContents();
+
+    function shouldContinue(){
+        //Check One - Any pending setTimeout, setInterval, setImmediate ? 
+        //Check Two - Any pending OS tasks? (Like server listening to port)
+        //Check Three - Any pending long running operations ? (like fs modules)
+        return pendingTimers.length || pendingOSTasks.length || pendingOperations.length
+    }
+
+
+    //Entirebody executes in one 'tick'
+    while(shouldContinue()){
+        // 1. Node looks at pendingTimers and sees if any functions are ready to be called, setTimeout, setInterval
+        // 2. Node looks at pendingOSTasks and pendingOperations(threadPool tasks) and then call relevant callbacks
+        // 3. Pause execution. Continue when.. 
+        //    - a new pendingOSTask is done
+        //    - a new pendingOperation is done
+        //    - a timer is about to complete
+        // 4. Node looks at pendingTimers and call any setImmediate
+        // 5. Handle any 'close' events - (cleanup code)
+    }
+    //exit back to terminal
+    ~~~
+
+
+
+
 ### Getting Started with nodejs
 1. node can be used with v8 (managed by google), chakra, spidermonkey
 1. Browser, DOM  api vs Node api (v8)
