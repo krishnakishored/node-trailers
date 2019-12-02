@@ -68,10 +68,19 @@
     }
     //exit back to terminal
     ~~~
+---- 
+## Enhancing Node Performance
+1. Use Node in Cluster Mode - Recommended. Use Worker Threads (Experimental)
+1. request ----> Node Server (Single Thread) ----> Response
+1. Cluster Manager is responsible for monitoring the health of individual instances of our applications that we are going to launch at the same time.
+1. Cluster Manager doesn't execute any application code. It can start,stop, restart or send data to other instances.
+1. The first instance of node that gets launched when we run command ($ node index.js) is what we refer to as the cluster manager. `cluster.fork()` - node executes the file second time but in a worker instance
+1. require('cluster') - the Cluster module is a standard library module just like FS or HTTP or crypto or any of those other ones.
+1. apache benchmarking - `$ ab -c 50 -n 500 localhost:3000\fast`  - 500 requests, 50 concurrent
+    `process.env.UV_THREADPOOL_SIZE = 1` // doesn't restrict the total no.of threads in the cluster. 
+        // It means every child in the cluster has only one thread
 
-
-
-
+---- 
 ### Getting Started with nodejs
 1. node can be used with v8 (managed by google), chakra, spidermonkey
 1. Browser, DOM  api vs Node api (v8)
