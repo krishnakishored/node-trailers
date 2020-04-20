@@ -4,6 +4,7 @@ const timelog = require('../middleware/timelog')
 
 const request_transformer = require('../middleware/request-transfomer')
 
+// router.all('/', timelog, (req, res) => { //as is without request-transformer middleware
 router.all('/', timelog,request_transformer, (req, res) => {
     let echo_response = {   }
     echo_response.request_body = req.body

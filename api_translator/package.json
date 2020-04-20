@@ -1,18 +1,24 @@
 {
-  "name": "rerouter",
+  "name": "api_translator",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "axios": "^0.19.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "nodemon": "^2.0.3"
+    "nodemon": "^2.0.3",
+    "request": "^2.88.2"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "devstart": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.comtech-idn.com/ilp/api_translator.git"
   },
   "author": "",
   "license": "ISC"
