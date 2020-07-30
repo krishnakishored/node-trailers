@@ -1073,3 +1073,6 @@ Express application uses a callback function whose parameters are request and re
 ### References:
 1. https://dev.to/fedekau/building-awesome-clis-with-javascript-and-oclif-291o
 1. https://www.youtube.com/watch?v=gG3pytAY2MY&list=PLWKjhJtqVAbmGQoa3vFjeRbRADAOC9drk&index=8
+1. https://stackoverflow.com/questions/38750705/filter-object-properties-by-key-in-es6
+1. https://masteringjs.io/tutorials/express/redirect#:~:text=The%20res.,new%20URL%20as%20shown%20below.
+1. https://zellwk.com/blog/async-await-express/
