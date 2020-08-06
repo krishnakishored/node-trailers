@@ -6,9 +6,10 @@ app.use(express.json())
 
 
 
-var publicRouter = require('./routes/public');
-var privateRouter = require('./routes/private');
-var sharedRouter = require('./routes/shared');
+var publicRouter = require('./routes/public')
+var privateRouter = require('./routes/private')
+var sharedRouter = require('./routes/shared')
+var uploadRouter = require('./routes/upload')
 // var translateRouter = require('./routes/translate')
 
 app.use('/public',publicRouter)
@@ -17,7 +18,10 @@ app.use('/shared',sharedRouter) //ispace
 // app.use('/ispace',groupRouter) //ispace
 // app.use('/comtech',groupRouter) //comtech
 
-app.all('/*', (req, res) => res.json({
+app.use('/upload',uploadRouter)
+
+
+app.all('/*', (req, res) => res.status(200).json({
     "greeting":"Hello from Final Handler !!!",
     'method': req.method,
     "headers":req.headers,

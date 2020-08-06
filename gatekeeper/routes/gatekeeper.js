@@ -44,47 +44,4 @@ router.all('/*',async (req,res) =>{
     }
 })
 
-// router.all('/', (req, res) => {
-
-//     // //ToDo: switch based on req.body 
-//     // if (req.method == 'GET') {
-//     //     // only status is a GET method
-//     //     // res.redirect(config.app.upstream_status_url)  // res.redirect() works for get requests
-//     //     var redirect_url = config.app.upstream_status_url
-//     // } else {
-//     //     redirect_url = config.app.upstream_calculate_url
-//     // }
-    
-//     // console.log(JSON.stringify(req.body))
-//     // 307 guarantees that the method and the body will not be changed when the translateed request is made.
-//     // res.redirect(307,config.app.upstream_calculate_url)  // ToDo: Did not work as expected
-
-//     redirect_url = config.app.upstream_url
-//     console.log(redirect_url)
-//     let translate_header = {}
-//     translate_header = req.headers
-//     translate_header['X-Auth-Match'] = 'Yes' //Todo: add custome header based on some logic
-    
-//     // console.log(req.headers)
-//     let payload = {
-//         'method': req.method,
-//         'url': redirect_url,
-//         'headers': translate_header,
-//         body: JSON.stringify(req.body)
-//     };
-
-
-//     //Todo: use axios instead of request, which support async/await
-
-//     // axios({
-//     //     url: 'https://dog.ceo/api/breeds/list/all',
-//     //     method: 'get'
-//     //   })
-
-//     (async () => {
-//         response = await axios(payload)
-//         console.log(response.data)
-//     })()
-// })
-
 module.exports = router;
