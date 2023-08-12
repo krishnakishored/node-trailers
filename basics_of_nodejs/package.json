@@ -1,0 +1,14 @@
+{
+  "name": "basics_of_nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "asynchronous_programming.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

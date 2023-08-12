@@ -6,43 +6,36 @@
 # 22jTShR3IjnQOCCwSjnMcSwWQegvyz3M # kishore
 # ODZtfcy30GzyDrzIPQW8Pj5zGIG3i1AR # seshu
 # qANXbYNKbHCpeFRHAsVkU3gYhvEz6MIG # satyanadella
-@greeter_url = http://192.168.1.119:50008
-@KONG_BASE_URL = http://localhost:80
-@KONG_ADMIN_URL = http://192.168.1.119:18001
+@upload_url = http://192.168.43.130:6543
+@KONG_BASE_URL = http://localhost:18000
+@KONG_ADMIN_URL = http://192.168.1.142:18001
 
-# @kong_greeter_url = {{KONG_BASE_URL}}/public
-# @kong_greeter_url = {{KONG_BASE_URL}}/private/seshug
-# @kong_greeter_url = {{KONG_BASE_URL}}/shared/ispace
-@kong_greeter_url = {{KONG_BASE_URL}}/shared/comtech
+# @kong_upload_url = {{KONG_BASE_URL}}/public
+# @kong_upload_url = {{KONG_BASE_URL}}/private/seshug
+# @kong_upload_url = {{KONG_BASE_URL}}/shared/ispace
+@kong_upload_url = {{KONG_BASE_URL}}/shared/comtech
 
-
-#################### GET Echo ########################################  
-# GET {{greeter_url}}/shared/comtech  HTTP/1.1
-#################### GET Status ########################################  
-GET {{KONG_BASE_URL}}/ssb/status?apikey=Aev4fShK1dwT5iLNJ5e3BLNkqT3rkNdn  HTTP/1.1
 
 #################### GET Echo ########################################  
-# GET {{greeter_url}}/shared/comtech  HTTP/1.1
-GET {{kong_greeter_url}}/?apikey={{apikey}}  HTTP/1.1
-##############
-GET {{kong_greeter_url}}/?apikey={{apikey}}  HTTP/1.1
+# GET {{upload_url}}/shared/comtech  HTTP/1.1
+GET {{upload_url}}  HTTP/1.1
 # GET http://localhost:5555/group  HTTP/1.1
 
 Content-Type: {{contentType}}
 
 
 #################### POST Echo ########################################  
-# POST  {{greeter_url}}/echo  HTTP/1.1
-POST {{kong_greeter_url}}/?apikey={{apikey}}  HTTP/1.1
+# POST  {{upload_url}}/echo  HTTP/1.1
+POST {{upload_url}}/geojson/kishore  HTTP/1.1
 Content-Type: {{contentType}}
 
 {
-    "message":"How are you doing ?"
-
+    "filename": "sample",
+    "payload": {"text":"How are you doing ?"}
 }
 #################### PUT Echo ########################################  
-PUT {{greeter_url}}/public HTTP/1.1
-# PUT {{kong_greeter_url}}/public HTTP/1.1
+PUT {{upload_url}}/public HTTP/1.1
+# PUT {{kong_upload_url}}/public HTTP/1.1
 Content-Type: {{contentType}}
 
 {
@@ -51,7 +44,7 @@ Content-Type: {{contentType}}
 }
 
 #################### PATCH Echo ########################################  
-PATCH   {{greeter_url}}/public  HTTP/1.1
+PATCH   {{upload_url}}/public  HTTP/1.1
 Content-Type: {{contentType}}
 
 {
@@ -59,14 +52,14 @@ Content-Type: {{contentType}}
 
 }
 #################### DELETE Echo ########################################  
-DELETE  {{greeter_url}}/public  HTTP/1.1
+DELETE  {{upload_url}}/public  HTTP/1.1
 Content-Type: {{contentType}}
 
 #########################################################################
 
 #################### GET Home ########################################  
-# GET {{greeter_url}}/private/user  HTTP/1.1
-# GET {{greeter_url}}  HTTP/1.1
+# GET {{upload_url}}/private/user  HTTP/1.1
+# GET {{upload_url}}  HTTP/1.1
 # GET {{KONG_BASE_URL}}/helloword  HTTP/1.1
 GET {{KONG_BASE_URL}}/helloword?apikey=1iLXAex15SDLGY1DP9oBsZY4Xa1eN9VQ  HTTP/1.1
 Content-Type: {{contentType}}
@@ -97,7 +90,7 @@ GET {{KONG_ADMIN_URL}}/services/greeter HTTP/1.1
 
 ######################### Create a route ##################################################
 
-curl --location --request POST 'http://192.168.1.119:18001/services/gatekeeper/routes' \
+curl --location --request POST 'http://192.168.1.142:18001/services/gatekeeper/routes' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --data-urlencode 'paths[]=/gatekeeper/v1' \
 --data-urlencode 'strip_path=true' \
