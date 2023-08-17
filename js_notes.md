@@ -1076,3 +1076,8 @@ Express application uses a callback function whose parameters are request and re
 1. https://stackoverflow.com/questions/38750705/filter-object-properties-by-key-in-es6
 1. https://masteringjs.io/tutorials/express/redirect#:~:text=The%20res.,new%20URL%20as%20shown%20below.
 1. https://zellwk.com/blog/async-await-express/
+1. Event Loop
+    1. https://dev.to/nodedoctors/animated-nodejs-event-loop-phases-1mcp
+    1. https://progressivecoder.com/a-deeper-look-at-nodejs-event-loop-phases/
+    1. https://blog.logrocket.com/complete-guide-node-js-event-loop/
+    1. https://heynode.com/tutorial/how-event-loop-works-nodejs/
