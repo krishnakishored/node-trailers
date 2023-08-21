@@ -9,6 +9,9 @@ module.exports = {
     port: process.env.DB_PORT,
     dialect: "postgres", // dialect has to be explicitly defined
     logging: (...msg) => console.log(msg), // Displays all log function call parameters
+    // define: { // TODO: not working as expected
+    //   freezeTableName: true, // Prevents sequelize from pluralizing table names
+    // }
   },
   client: null
   // test: {},

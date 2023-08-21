@@ -4,8 +4,10 @@
     - security headers
     - request & response logging
     - response time
-1. ORM - Sequelize
-1. sequelize-cli to migrate & seed
+1. Database - Postgresql
+    - Indexing
+    - Full Text search    
+1. use ORM - `sequelize` &  `sequelize-cli` to migrate & seed the data
     - update the config file to config.js to read from env variables
     - update `.sequelizerc`  to execute the sequelize cmds from any folder
     ```sh 
@@ -13,15 +15,27 @@
         $ npx sequelize --help
         $ npx sequelize init
         $ npx sequelize-cli --version
-        $ npx sequelize-cli db:migrate
     ```
     - `Creating the first Model (and Migration)`
     ```sh
        # @ ~/coding/js_coding/backend/node-trailers/vermittler
-       $ npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string
        # This will:
         # - Create a model file user in models folder;
         # - Create a migration file with name like XXXXXXXXXXXXXX-create-user.js in migrations folder.
+       $ npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string
+       # 
+       $ npx sequelize-cli model:generate --name Artist --attributes name:string,slug:string --force 
+       # db:migrate will create the table in the database
+       $ npx sequelize-cli db:migrate
+       # db migrate specific migration
+       $ npx sequelize-cli db:migrate --name 20230821084444-create-artist
+       # undo the last migration
+       $ npx sequelize-cli db:migrate:undo 
+       # undo the specific migration
+       $ npx sequelize-cli db:migrate:undo --name 20230817052134-create-user
+       # This will create xxx-migration-skeleton.js in your migration folder
+       $ npx sequelize-cli migration:generate --name <name_of_your_migration>
+
     ```
     - `Creating the first Seed`
     ```sh
@@ -38,18 +52,16 @@
         $ npx sequelize-cli db:seed:undo --seed 20230817052308-demo-user.js
         $ npx sequelize-cli db:seed --seed 20230817062507-demo-artist.js
      ```
-1. use `queryInterface.sequelize.transaction` in migrations
+    - (TODO) use `queryInterface.sequelize.transaction` in migrations
+    - Seeds
+    - Migrations
 
-       
-
-1. Database - Postgresql
-1. Migrations
-1. Seeds
 1. Cache - Redis
 1. Rate limiting
-1. Authentication
-1. Authorization
+1. Authentication - jwt token
+1. Authorization 
 1. Unit tests
+    - use of Mocha Framework
 1. serve static files
 1. template html
 1. cookies & sessions
@@ -167,3 +179,5 @@
     - https://youtu.be/M09nsCa4_Bk
     - https://youtu.be/4SySDaX753A
     - https://youtu.be/ikJ5AXDj3go
+1. Sequelize
+    - https://sequelize.org/docs/v6/category/core-concepts/

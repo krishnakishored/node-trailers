@@ -3,22 +3,21 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Artists', {
-      name: {
-        type: Sequelize.STRING,
+      id: {
         allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
       },
-      email: {
-        type: Sequelize.STRING,
+      name: {
+        allowNull: false,
+        type: Sequelize.STRING
+
+      },
+      slug: {
         allowNull: false,
         unique: true,
-        validate: {
-          isEmail: true
-        }
-      },
-      id: {
-        type: Sequelize.INTEGER, // todo: changes it to use UUID
-        primaryKey: true,
-        autoIncrement: true
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

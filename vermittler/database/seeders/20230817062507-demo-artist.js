@@ -8,12 +8,12 @@ module.exports = {
     */
     await queryInterface.bulkInsert('Artists', [{
       name: 'SPB',
-      email: 'spb@singer.com',
+      slug: 'spb',
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
       name: 'DSP',
-      email: 'dsp@singer.com',
+      slug: 'dsp',
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});
