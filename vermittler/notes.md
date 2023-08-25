@@ -6,7 +6,75 @@
     - response time
 1. Database - Postgresql
     - Indexing
-    - Full Text search    
+    - Full Text search  
+1. Associations
+
+    1. **Artist**:
+    - Can have multiple albums (many-to-many with albums).
+    - Can have multiple songs (many-to-many with songs).
+
+    1. **Album**:
+    - Can have multiple songs.
+    - Belongs to many artists (many-to-many with artists).
+
+    1. **Song**:
+    - Belongs to only one album.
+    - Belongs to many artists (many-to-many with artists).
+
+    Let's create these associations:
+
+    ```javascript
+    const { Model, DataTypes } = require('sequelize');
+    const sequelize = new Sequelize('sqlite::memory:');
+
+    // Artist model
+    class Artist extends Model {}
+    Artist.init({
+        name: DataTypes.STRING,
+        genre: DataTypes.STRING
+    }, { sequelize, modelName: 'artist' });
+
+    // Album model
+    class Album extends Model {}
+    Album.init({
+        title: DataTypes.STRING,
+        year: DataTypes.INTEGER
+    }, { sequelize, modelName: 'album' });
+
+    // Song model
+    class Song extends Model {}
+    Song.init({
+        title: DataTypes.STRING,
+        duration: DataTypes.INTEGER  // Duration in seconds
+    }, { sequelize, modelName: 'song' });
+
+    // Associations
+
+    // Artist and Album (many-to-many)
+    const ArtistAlbum = sequelize.define('artist_album', {});
+    Artist.belongsToMany(Album, { through: ArtistAlbum });
+    Album.belongsToMany(Artist, { through: ArtistAlbum });
+
+    // Artist and Song (many-to-many)
+    Artist.belongsToMany(Song, { through: 'artist_song' });
+    Song.belongsToMany(Artist, { through: 'artist_song' });
+
+    // Album and Song (one-to-many)
+    Album.hasMany(Song, { foreignKey: 'albumId' });
+    Song.belongsTo(Album, { foreignKey: 'albumId' });
+
+    // Syncing the database
+    sequelize.sync({ force: true }).then(() => {
+        console.log('Database synced!');
+    });
+    ```
+
+    With the updated structure:
+
+    - An `Artist` can belong to many `Albums` and vice versa, managed through the join table `artist_album`.
+    - An `Artist` can belong to many `Songs` and vice versa, managed through the join table `artist_song`.
+    - Each `Song` belongs to only one `Album`, but can belong to many `Artists`.
+
 1. use ORM - `sequelize` &  `sequelize-cli` to migrate & seed the data
     - update the config file to config.js to read from env variables
     - update `.sequelizerc`  to execute the sequelize cmds from any folder

@@ -6,6 +6,9 @@
 GET {{vermittler_base_url}}/status HTTP/1.1
 
 ############# Artist #####################
+### Get artist by slug
+GET {{vermittler_base_url}}/artists/slug/p-susheela HTTP/1.1
+
 ### Get all artists
 GET {{vermittler_base_url}}/artists HTTP/1.1
 ### GET artist by id
@@ -35,3 +38,5 @@ Content-Type: application/json
   "name": "Devi Sri Prasad"
 }
 
+### DELETE artist
+DELETE {{vermittler_base_url}}/artists/35 HTTP/1.1

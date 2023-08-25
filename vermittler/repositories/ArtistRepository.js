@@ -4,6 +4,17 @@
 const models = require('../database/models');
 
 class ArtistRepository {
+
+    //retrieve artist by unique slug
+    async getBySlug(slug, selectedFields) {
+        return await models.Artist.findOne({
+            where: {
+                slug: slug
+            },
+            attributes: selectedFields
+        });
+    }
+
     // get all artists
     async getAll() {
         return await models.Artist.findAll();

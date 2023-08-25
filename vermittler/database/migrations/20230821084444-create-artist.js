@@ -12,10 +12,10 @@ module.exports = {
       name: {
         allowNull: false,
         type: Sequelize.STRING
-
       },
       slug: {
-        allowNull: false,
+        // create a slug using beforeCreate hook in the model
+        // allowNull: false,
         unique: true,
         type: Sequelize.STRING
       },
@@ -27,7 +27,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    },);
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Artists');

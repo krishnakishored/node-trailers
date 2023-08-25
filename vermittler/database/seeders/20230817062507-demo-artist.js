@@ -1,22 +1,28 @@
 'use strict';
 
+const artist = require('../models/artist');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     /**
      * Add seed commands here
     */
-    await queryInterface.bulkInsert('Artists', [{
-      name: 'SPB',
-      slug: 'spb',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }, {
-      name: 'DSP',
-      slug: 'dsp',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }], {});
+    const artists_array = [
+      {
+        name: 'SPB',
+      },
+      {
+        name: 'DSP',
+      }
+    ]
+    //temporarily add the slug to the artists - beforeCreate, beforeBulkCreate hooks should take care of this
+    artists_array.forEach(async (artist) => {
+      artist.slug = artist.name.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-')
+      artist.createdAt = new Date()
+      artist.updatedAt = new Date()
+    })
+    await queryInterface.bulkInsert('Artists', artists_array, {});
   },
 
   async down(queryInterface, Sequelize) {

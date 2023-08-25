@@ -19,6 +19,17 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Artist',
+    // timestamps: true,
+    // hooks: {
+    //   beforeCreate: (artist, options) => {
+    //     artist.slug = artist.name.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-')
+    //   },
+    //   beforeBulkCreate: (artists, options) => {
+    //     artists.forEach(artist => {
+    //       artist.slug = artist.name.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-')
+    //     });
+    //   }
+    // }
   });
   return Artist;
 };

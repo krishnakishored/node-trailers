@@ -10,6 +10,11 @@ const artistController = new ArtistController();
 
 //TODO:use middleware to log requests
 
+// retrieve artist by unique slug
+router.get('/slug/:slug', async (req, res, next) => {
+    return await artistController.getBySlug(req, res);
+});
+
 router.get('/:id', async (req, res, next) => {
     return await artistController.getById(req, res);
 });

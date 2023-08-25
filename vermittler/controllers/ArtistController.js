@@ -6,6 +6,21 @@ class ArtistController {
         this.ArtistService = new ArtistService();
     }
 
+    // retrieve artist by unique slug
+    async getBySlug(req, res) {
+        try {
+            const artist = await this.ArtistService.getBySlug(req.params.slug);
+            if (artist) {
+                return res.status(200).send(artist);
+            }
+            return res.status(404).send('Artist with the specified slug does not exists');
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send('Error while retrieving artist');
+        }
+    }
+
+
     async getAll(req, res) {
 
         try {
