@@ -181,3 +181,5 @@
     - https://youtu.be/ikJ5AXDj3go
 1. Sequelize
     - https://sequelize.org/docs/v6/category/core-concepts/
+1. pm2 
+    - https://pm2.keymetrics.io/docs/usage/quick-start/

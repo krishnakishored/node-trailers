@@ -1,3 +1,4 @@
+// Desc: Configuration file for the application
 require('dotenv').config()
 
 const config = {
@@ -5,9 +6,10 @@ const config = {
         NAME: process.env.NAME || "vermittler",
         PORT: process.env.PORT || 3000,
         INSTANCE_COUNT: process.env.INSTANCE_COUNT || 1,
-        DEBUG: process.env.DEBUG || "express"
+        DEBUG: process.env.DEBUG || "express",
+        VERSION: process.env.VERSION || "0.9"
     },
-    db:{
+    db: {
         DB_HOST: process.env.DB_HOST || "localhost",
         DB_PORT: process.env.DB_PORT || 27017,
         DB_NAME: process.env.DB_NAME || "vermittler",

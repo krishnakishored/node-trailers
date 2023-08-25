@@ -1,23 +1,24 @@
 const config = require('./config/config');
 
 module.exports = {
-  apps : [{
+  apps: [{
     name: 'vermittler',
     script: './bin/www',
-    watch: true,
-    cwd:"./",
+    watch: ["."],
+    watch_delay: 1000, // Delay between restart
+    cwd: "./",
     ignore_watch: ["node_modules"],
     // instances: config.app.INSTANCE_COUNT, //"max" to use all cpu cores(4)
     "env": {
       "PORT": config.app.PORT,
       "DEBUG": "express"
     },
-  }, 
-  // {
-  //   script: './service-worker/',
-  //   watch: ['./service-worker']
-  // }
-],
+  },
+    // {
+    //   script: './service-worker/',
+    //   watch: ['./service-worker']
+    // }
+  ],
 
   // deploy : {
   //   production : {

@@ -7,14 +7,33 @@ const router = express.Router();
 const ArtistController = require('../controllers/ArtistController.js');
 const artistController = new ArtistController();
 
+
+//TODO:use middleware to log requests
+
 router.get('/:id', async (req, res, next) => {
-    const artist = await artistController.getById(req, res);
-    res.json(artist);
+    return await artistController.getById(req, res);
+});
+
+router.put('/:id', async (req, res, next) => {
+    return await artistController.update(req, res);
+});
+
+router.delete('/:id', async (req, res, next) => {
+    return await artistController.delete(req, res);
+});
+
+router.patch('/:id', async (req, res, next) => {
+    return await artistController.patch(req, res);
 });
 
 router.get('/', async (req, res, next) => {
-    const artists = await artistController.getAll(req, res);
-    res.json(artists);
+    return await artistController.getAll(req, res);
 });
+
+router.post('/', async (req, res, next) => {
+    return await artistController.create(req, res);
+});
+
+
 
 module.exports = router;

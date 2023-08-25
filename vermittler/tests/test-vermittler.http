@@ -1,0 +1,37 @@
+@contentType = application/json
+# @token = "Bearer " + $token
+@vermittler_base_url = http://localhost:4000
+
+###### Status #######
+GET {{vermittler_base_url}}/status HTTP/1.1
+
+############# Artist #####################
+### Get all artists
+GET {{vermittler_base_url}}/artists HTTP/1.1
+### GET artist by id
+GET {{vermittler_base_url}}/artists/2 HTTP/1.1
+
+### Create artist
+POST {{vermittler_base_url}}/artists HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "P. Susheela"
+}
+
+### Update artist
+PUT {{vermittler_base_url}}/artists/2 HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Devi Sri Prasad"
+}
+
+### Patch artist
+PATCH {{vermittler_base_url}}/artists/2 HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Devi Sri Prasad"
+}
+
