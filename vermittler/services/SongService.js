@@ -2,9 +2,8 @@
 // performs business logic and interacts with the repository (database layer)
 const SongRepository = require('../repositories/SongRepository.js');
 class SongService {
-
-    //TODO: try dependency injection
     constructor() {
+        //TODO: try dependency injection
         this.SongRepository = new SongRepository();
     }
 

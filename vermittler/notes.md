@@ -91,27 +91,33 @@
         # - Create a model file user in models folder;
         # - Create a migration file with name like XXXXXXXXXXXXXX-create-user.js in migrations folder.
        $ npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string
-       # 
+       # Artist model
        $ npx sequelize-cli model:generate --name Artist --attributes name:string,slug:string --force 
+       # Song model
        $ npx sequelize-cli model:generate --name Song --attributes title:string,slug:string,summary:json,lyrics:json,native_lyrics:json
+       # Album model
+       $ npx sequelize-cli model:generate --name Album --attributes title:string,slug:string,language:string,year:integer
+
        # db:migrate will create the table in the database
        $ npx sequelize-cli db:migrate
        # db migrate specific migration
        $ npx sequelize-cli db:migrate --name 20230821084444-create-artist
        $ npx sequelize-cli db:migrate --name 20230827152309-create-song
+       $ npx sequelize-cli db:migrate --name 20230827164349-create-album
        # undo the last migration
        $ npx sequelize-cli db:migrate:undo 
        # undo the specific migration
        $ npx sequelize-cli db:migrate:undo --name 20230817052134-create-user
        # This will create xxx-migration-skeleton.js in your migration folder
        $ npx sequelize-cli migration:generate --name <name_of_your_migration>
-
     ```
     - `Creating the first Seed`
     ```sh
         $ npx sequelize-cli seed:generate --name demo-user
         # This will create a seed file with name like XXXXXXXXXXXXXX-demo-user.js in seeders folder.
-        # npx sequelize-cli seed:generate --name demo-song
+        $ npx sequelize-cli seed:generate --name demo-artist
+        $ npx sequelize-cli seed:generate --name demo-song
+        $ npx sequelize-cli seed:generate --name demo-album
     ```
      - Edit the seed file to insert a demo user
      ```sh
@@ -122,10 +128,9 @@
         $ npx sequelize-cli db:seed:undo --seed <name-of-seed-as-in-data>
         $ npx sequelize-cli db:seed:undo --seed 20230817052308-demo-user.js
         $ npx sequelize-cli db:seed --seed 20230817062507-demo-artist.js
+        $ npx sequelize-cli db:seed --seed 20230827164825-demo-album.js
      ```
     - (TODO) use `queryInterface.sequelize.transaction` in migrations
-    - Seeds
-    - Migrations
 
 1. Cache - Redis
 1. Rate limiting

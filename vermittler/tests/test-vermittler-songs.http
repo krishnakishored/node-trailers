@@ -6,15 +6,15 @@
 GET {{vermittler_base_url}}/status HTTP/1.1
 
 ############# Song #####################
-### Get artist by slug
+### Get song by slug
 GET {{vermittler_base_url}}/songs/slug/song-1 HTTP/1.1
 
 ### Get all songs
 GET {{vermittler_base_url}}/songs HTTP/1.1
-### GET artist by id
+### GET song by id
 GET {{vermittler_base_url}}/songs/2 HTTP/1.1
 
-### Create artist
+### Create song
 POST {{vermittler_base_url}}/songs HTTP/1.1
 Content-Type: application/json
 
@@ -22,7 +22,7 @@ Content-Type: application/json
   "title": "song 3"
 }
 
-### Update artist
+### Update song
 PUT {{vermittler_base_url}}/songs/2 HTTP/1.1
 Content-Type: application/json
 
@@ -30,7 +30,7 @@ Content-Type: application/json
   "title": "Devi Sri Prasad"
 }
 
-### Patch artist
+### Patch song
 PATCH {{vermittler_base_url}}/songs/2 HTTP/1.1
 Content-Type: application/json
 
@@ -38,7 +38,7 @@ Content-Type: application/json
   "title": "Devi Sri Prasad"
 }
 
-### DELETE artist
+### DELETE song
 DELETE {{vermittler_base_url}}/songs/35 HTTP/1.1
 ##########
 

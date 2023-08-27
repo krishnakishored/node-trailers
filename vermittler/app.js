@@ -6,6 +6,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var artistsRouter = require('./routes/artists');
 var songsRouter = require('./routes/songs');
+var albumsRouter = require('./routes/albums');
 
 var app = express();
 
@@ -19,6 +20,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/artists', artistsRouter);
 app.use('/songs', songsRouter);
+app.use('/albums', albumsRouter);
 
 // const db = require('./database/models/index.js')
 
