@@ -93,10 +93,12 @@
        $ npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string
        # 
        $ npx sequelize-cli model:generate --name Artist --attributes name:string,slug:string --force 
+       $ npx sequelize-cli model:generate --name Song --attributes title:string,slug:string,summary:json,lyrics:json,native_lyrics:json
        # db:migrate will create the table in the database
        $ npx sequelize-cli db:migrate
        # db migrate specific migration
        $ npx sequelize-cli db:migrate --name 20230821084444-create-artist
+       $ npx sequelize-cli db:migrate --name 20230827152309-create-song
        # undo the last migration
        $ npx sequelize-cli db:migrate:undo 
        # undo the specific migration
@@ -109,6 +111,7 @@
     ```sh
         $ npx sequelize-cli seed:generate --name demo-user
         # This will create a seed file with name like XXXXXXXXXXXXXX-demo-user.js in seeders folder.
+        # npx sequelize-cli seed:generate --name demo-song
     ```
      - Edit the seed file to insert a demo user
      ```sh

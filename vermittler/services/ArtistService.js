@@ -52,9 +52,8 @@ class ArtistService {
     }
 
     async patch(id, artist) {
-        // update the slug if the name has changed
-
         if (artist.name) {
+            // update the slug if the name has changed
             artist.slug = artist.name.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-');
         }
         return await this.ArtistRepository.patch(id, artist);
