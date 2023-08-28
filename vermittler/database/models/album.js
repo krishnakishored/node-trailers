@@ -10,7 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // - Can have multiple songs.    
+      // - Belongs to many artists (many-to-many with artists).
+      Album.belongsToMany(models.Artist, { through: models.ArtistAlbum });
+      Album.hasMany(models.Song, { targetKey: 'slug', foreignKey: 'album_slug' });
     }
   }
   Album.init({

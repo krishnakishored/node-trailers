@@ -2,34 +2,18 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Songs', {
+    await queryInterface.createTable('ArtistAlbums', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
-        allowNull: false,
+      artist_slug: {
         type: Sequelize.STRING
-      },
-      slug: {
-        unique: true,
-        type: Sequelize.STRING
-      },
-      summary: {
-        type: Sequelize.JSON
-      },
-      lyrics: {
-        type: Sequelize.JSON
       },
       album_slug: {
-        type: Sequelize.STRING,
-        references: {
-          model: 'Albums',
-          key: 'slug'
-        },
-        onDelete: 'CASCADE'
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -42,6 +26,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Songs');
+    await queryInterface.dropTable('ArtistAlbums');
   }
 };

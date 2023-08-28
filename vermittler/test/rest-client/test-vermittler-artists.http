@@ -3,11 +3,13 @@
 @vermittler_base_url = http://localhost:4000
 
 ###### Status #######
+GET {{vermittler_base_url}} HTTP/1.1
+### Get
 GET {{vermittler_base_url}}/status HTTP/1.1
 
 ############# Artist #####################
 ### Get artist by slug
-GET {{vermittler_base_url}}/artists/slug/p-susheela HTTP/1.1
+GET {{vermittler_base_url}}/artists/slug/spb HTTP/1.1
 
 ### Get all artists
 GET {{vermittler_base_url}}/artists HTTP/1.1

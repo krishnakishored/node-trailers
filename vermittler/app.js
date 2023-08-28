@@ -33,4 +33,8 @@ module.exports = app;
 //TODO: add authorization middleware
 //TODO: add validation middleware
 //TODO: add unit tests
+//TODO: pagination
+//TODO: add caching
+//TODO: add docker
+//TODO: swagger
 
