@@ -23,14 +23,22 @@ module.exports = {
       lyrics: {
         type: Sequelize.JSON
       },
-      album_slug: {
-        type: Sequelize.STRING,
+      album_id: {
+        type: Sequelize.INTEGER,
         references: {
           model: 'Albums',
-          key: 'slug'
+          key: 'id'
         },
         onDelete: 'CASCADE'
       },
+      // album_slug: {
+      //   type: Sequelize.STRING,
+      //   references: {
+      //     model: 'Albums',
+      //     key: 'slug'
+      //   },
+      //   onDelete: 'CASCADE'
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

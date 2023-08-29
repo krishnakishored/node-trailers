@@ -16,7 +16,8 @@ module.exports = {
     const songs_array = [
       {
         title: 'Song 1',
-        album_slug: 'telugu-2000-album-1',
+        // album_slug: 'telugu-2000-album-1',
+        album_id: 1,
         summary: {
           foreign: ["This is the summary of song 1"],
           native: ["This is the native summary of song 1"],
@@ -29,7 +30,8 @@ module.exports = {
       },
       {
         title: 'Song 2',
-        album_slug: 'tamil-2001-album-2',
+        // album_slug: 'tamil-2001-album-2',
+        album_id: 2,
         summary: {
           foreign: ["This is the summary of song 2"],
           native: ["This is the native summary of song 2"],
@@ -41,7 +43,8 @@ module.exports = {
       },
       {
         title: 'Song 3',
-        album_slug: 'tamil-2001-album-2',
+        // album_slug: 'tamil-2001-album-2',
+        album_id: 2,
         summary: {
           foreign: ["This is the summary of song 3"],
           native: ["This is the native summary of song 3"],

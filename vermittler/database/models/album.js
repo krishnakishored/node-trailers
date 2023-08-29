@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // - Can have multiple songs.    
       // - Belongs to many artists (many-to-many with artists).
-      Album.belongsToMany(models.Artist, { through: models.ArtistAlbum });
-      Album.hasMany(models.Song, { targetKey: 'slug', foreignKey: 'album_slug' });
+      // Album.belongsToMany(models.Artist, { through: models.ArtistAlbum });
+      Album.hasMany(models.Song, { foreignKey: 'album_id', sourceKey: 'id' });
     }
   }
   Album.init({
