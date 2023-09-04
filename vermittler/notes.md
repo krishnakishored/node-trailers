@@ -51,8 +51,14 @@
     1. *Album* - `One-to-Many` - *Song*:
         ```js
         Album.hasMany(Song, { foreignKey: 'album_slug' });
-        Song.belongsTo(Album, { foreignKey: 'album_slug' });
-            ```
+        Song.belongsTo(Album, { foreignKey: 'album_slug' });        
+        ```
+1. In Sequelize CLI, junction tables for Many-to-Many relationships are not automatically generated when running migrations.
+```sh
+    $ npx sequelize-cli model:generate --name Singers --attributes artist_slug:string,song_slug:string
+    $ npx sequelize-cli model:generate --name Lyricists --attributes artist_slug:string,song_slug:string
+    $ npx sequelize-cli model:generate --name MusicDirectors --attributes artist_slug:string,song_slug:string
+``` 
 1. SQL Queries
     ```sql
         SELECT * FROM "Albums" JOIN "Songs" ON "Songs"."album_slug" = "Albums".slug;
@@ -86,23 +92,51 @@ $ npx sequelize-cli --version
     # To revert all migrations:
     npx sequelize-cli db:migrate:undo:all
 ```
-- Creating the first Model (and Migration)
+####  step-by-step guide to create migrations for albums, songs, artists
+
+1. Create model and migration for Album
+    >  @ ~/coding/js_coding/backend/node-trailers/vermittler
+    > $ npx sequelize-cli model:generate --name Album --attributes title:string,slug:string,language:string,year:integer
+
+1. Create model and migration for Song
+    > $ npx sequelize-cli model:generate --name Song --attributes title:string,slug:string,summary:json,lyrics:json 
+1. set `slug` field to be unique in create-song & create-album migrations
+    > unique: true
+1. Define associations in the models & migrations for Album and Song (One to Many)
+```js
+    //@ ~/vermittler/database/models/album.js
+    Album.hasMany(models.Song, { foreignKey: 'album_slug', sourceKey: 'slug' });
+    //@ ~/vermittler/database/models/song.js
+    Song.belongsTo(models.Album, { foreignKey: 'album_slug', targetKey: 'slug' });
+    // @ ~/vermittler/database/migrations/20230904115941-create-song.js
+    // add the foreign key
+    album_slug: {
+        type: Sequelize.STRING,
+        references: {
+          model: 'Albums',
+          key: 'slug'
+        },
+        // onDelete: 'CASCADE'
+      },
+```
+1. try to create the tables for album and song in the database using the migrations
 ```sh
-# @ ~/coding/js_coding/backend/node-trailers/vermittler
-# This will:
-    # - Create a model file user in models folder;
-    # - Create a migration file with name like XXXXXXXXXXXXXX-create-user.js in migrations folder.
-$ npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string
-# Artist model
-$ npx sequelize-cli model:generate --name Artist --attributes name:string,slug:string --force 
-# Song model
-$ npx sequelize-cli model:generate --name Song --attributes title:string,slug:string,summary:json,lyrics:json,native_lyrics:json
-# Album model
-$ npx sequelize-cli model:generate --name Album --attributes title:string,slug:string,language:string,year:integer
+    $ npx sequelize-cli db:migrate --name 20230904115646-create-album
+    $ npx sequelize-cli db:migrate --name 20230904115941-create-song
+```
+1. seed the models with some data
+```sh
+    $ npx sequelize-cli db:seed --seed 20230827164825-demo-album.js
+    $ npx sequelize-cli db:seed --seed 20230827152935-demo-song.js
+    # to generate the seed files:
+    # $ npx sequelize-cli seed:generate --name demo-song
+```
+1. try to query the database using the models
+```js
+    $ node database/query.js
+```
 
-## ArtistAlbum model
-    $ npx sequelize-cli model:generate --name ArtistAlbum --attributes artist_slug:string,album_slug:string
-
+$ npx sequelize-cli model:generate --name ArtistAlbum --attributes artist_slug:string,album_slug:string
 # db:migrate will create the table in the database
 $ npx sequelize-cli db:migrate
 # db migrate specific migration
@@ -115,11 +149,14 @@ $ npx sequelize-cli db:migrate:undo
 $ npx sequelize-cli db:migrate:undo --name 20230817052134-create-user
 # This will create xxx-migration-skeleton.js in your migration folder
 $ npx sequelize-cli migration:generate --name <name_of_your_migration>
-```
+# This will:
+    # - Create a model file user in models folder;
+    # - Create a migration file with name like XXXXXXXXXXXXXX-create-user.js in migrations folder.
+# $ npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string
 
 ### Seeding
 
-```bash
+```sh
     # To generate a new seed file:
     npx sequelize-cli seed:generate --name=name-of-seed
     # To apply all seeders:
@@ -131,11 +168,11 @@ $ npx sequelize-cli migration:generate --name <name_of_your_migration>
 ```
 - Creating the first Seed
 ```sh
-    $ npx sequelize-cli seed:generate --name demo-user
-    # This will create a seed file with name like XXXXXXXXXXXXXX-demo-user.js in seeders folder.
     $ npx sequelize-cli seed:generate --name demo-artist
     $ npx sequelize-cli seed:generate --name demo-song
     $ npx sequelize-cli seed:generate --name demo-album
+    # $ npx sequelize-cli seed:generate --name demo-user
+    # This will create a seed file with name like XXXXXXXXXXXXXX-demo-user.js in seeders folder.
 ```
 - Edit the seed file to insert a demo user
 ```sh
@@ -144,11 +181,75 @@ $ npx sequelize-cli migration:generate --name <name_of_your_migration>
     # to undo the seeds all, specific, most-recent
     $ npx sequelize-cli db:seed:undo:all
     $ npx sequelize-cli db:seed:undo --seed <name-of-seed-as-in-data>
-    $ npx sequelize-cli db:seed:undo --seed 20230817052308-demo-user.js
-    $ npx sequelize-cli db:seed --seed 20230817062507-demo-artist.js
-    $ npx sequelize-cli db:seed --seed 20230827164825-demo-album.js
+    
+
+    
 ```
 - (TODO) use `queryInterface.sequelize.transaction` in migrations
+
+### Sequence of steps to create models, associations, migrations, seeds
+1. Create the models without associations
+```sh
+    # Artist model
+    $ npx sequelize-cli model:generate --name Artist --attributes name:string,slug:string --force 
+    # Song model
+    $ npx sequelize-cli model:generate --name Song --attributes title:string,slug:string,summary:json,lyrics:json,native_lyrics:json
+    # Album model
+    $ npx sequelize-cli model:generate --name Album --attributes title:string,slug:string,language:string,year:integer,summary:json
+    # ArtistSungSongs model
+    $ npx sequelize-cli model:generate --name ArtistSungSongs --attributes artistId:integer,songId:integer
+    # ArtistLyricistSongs model
+    $ npx sequelize-cli model:generate --name ArtistLyricistSongs --attributes artistId:integer,songId:integer
+    # ArtistMusicDirectorSongs model
+    $ npx sequelize-cli model:generate --name ArtistMusicDirectorSongs --attributes artistId:integer,songId:integer
+
+```
+
+1. Run the migrations to create the tables
+```sh
+    $ npx sequelize-cli db:migrate --name 001-create-album.js
+    $ npx sequelize-cli db:migrate --name 101-create-song.js
+    $ npx sequelize-cli db:migrate --name 201-create-artist.js
+    $ npx sequelize-cli db:migrate --name 102-create-song.js
+```
+1. Use the `queryInterface.addColumn` to add the foreign keys in the tables
+1. Add associations manually in the models
+
+1. Create the Junction Table
+1. Run the migration for the junction table
+1. Create the associations
+1. Create the migrations
+1. Create the seeds
+```sh
+    $ npx sequelize-cli db:seed --seed 20230827164825-demo-album.js
+    $ npx sequelize-cli db:seed --seed 20230827152935-demo-song.js
+    $ npx sequelize-cli db:seed --seed 20230817062507-demo-artist.js
+```    
+1. Run the migrations
+1. Run the seeds
+
+
+
+### Operator
+`Sequelize.Op` is an object that contains a set of operators that can be used in Sequelize queries. Here are some basic use cases of `Sequelize.Op`:
+
+- **Comparison operators**: `Sequelize.Op.eq`, `Sequelize.Op.ne`, `Sequelize.Op.gt`, `Sequelize.Op.gte`, `Sequelize.Op.lt`, `Sequelize.Op.lte`, `Sequelize.Op.between`, `Sequelize.Op.notBetween`, `Sequelize.Op.in`, `Sequelize.Op.notIn`, `Sequelize.Op.like`, `Sequelize.Op.notLike`, `Sequelize.Op.iLike`, `Sequelize.Op.notILike`, `Sequelize.Op.startsWith`, `Sequelize.Op.endsWith`, `Sequelize.Op.substring`, `Sequelize.Op.regexp`, `Sequelize.Op.notRegexp`, `Sequelize.Op.iRegexp`, `Sequelize.Op.notIRegexp`, `Sequelize.Op.overlap`, `Sequelize.Op.contains`, `Sequelize.Op.contained`, `Sequelize.Op.any`, `Sequelize.Op.all`, `Sequelize.Op.col`
+
+- **Logical operators**: `Sequelize.Op.and`, `Sequelize.Op.or`, `Sequelize.Op.not`
+
+- **Other operators**: `Sequelize.Op.is`, `Sequelize.Op.not`, `Sequelize.Op.or`, `Sequelize.Op.and`, `Sequelize.Op.literal`, `Sequelize.Op.json`, `Sequelize.Op.jsonPath`, `Sequelize.Op.jsonOverlap`, `Sequelize.Op.any`, `Sequelize.Op.all`, `Sequelize.Op.values`, `Sequelize.Op.cast`, `Sequelize.Op.placeholder`
+
+- example
+```js
+    const { Op } = require('sequelize');
+    const albums = await Album.findAll({
+    where: {
+        year: {
+        [Op.gte]: 2000
+        }
+    }
+    });
+```
 
 ## Cache - Redis
 ## Rate limiting

@@ -13,6 +13,25 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       // Artist.belongsToMany(models.Album, { through: models.ArtistAlbum });
       // Artist.belongsToMany(models.Song, { through: models.ArtistSong });
+      Artist.belongsToMany(models.Song, {
+        through: 'ArtistSungSongs',
+        as: 'sungSongs',
+        foreignKey: 'artistId',
+      });
+      Artist.belongsToMany(models.Song, {
+        through: 'ArtistWrittenSongs',
+        as: 'writtenSongs',
+        foreignKey: 'artistId',
+      });
+      Artist.belongsToMany(models.Song, {
+        through: 'ArtistComposedSongs',
+        as: 'composedSongs',
+        foreignKey: 'artistId',
+      });
+
+      // Artist.belongsToMany(models.Song, { through: 'Singer', as: 'SungSongs', foreignKey: 'artist_slug', otherKey: 'song_slug' });
+      // Artist.belongsToMany(models.Song, { through: 'Lyricist', as: 'WrittenSongs', foreignKey: 'artist_slug', otherKey: 'song_slug' });
+      // Artist.belongsToMany(models.Song, { through: 'MusicDirector', as: 'ComposedSongs', foreignKey: 'artist_slug', otherKey: 'song_slug' });
     }
   }
   Artist.init({

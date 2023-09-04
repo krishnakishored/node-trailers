@@ -10,8 +10,20 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       title: {
-        allowNull: false,
+        allowNull: false, // this is new
         type: Sequelize.STRING
+      },
+      language: {
+        type: Sequelize.STRING,
+        defaultValue: "Music"
+      },
+      year: {
+        type: Sequelize.INTEGER,
+        defaultValue: 1913
+      },
+      album_name: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
       slug: {
         unique: true,
@@ -23,14 +35,7 @@ module.exports = {
       lyrics: {
         type: Sequelize.JSON
       },
-      // album_id: {
-      //   type: Sequelize.INTEGER,
-      //   references: {
-      //     model: 'Albums',
-      //     key: 'id'
-      //   },
-      //   onDelete: 'CASCADE'
-      // },
+      // references:
       album_slug: {
         type: Sequelize.STRING,
         references: {

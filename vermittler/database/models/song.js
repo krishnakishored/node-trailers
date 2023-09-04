@@ -10,16 +10,17 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
       Song.belongsTo(models.Album, { foreignKey: 'album_slug', targetKey: 'slug' })
-      Song.belongsToMany(models.Artist, { through: models.ArtistSong });
     }
   }
   Song.init({
     title: DataTypes.STRING,
     slug: DataTypes.STRING,
+    language: DataTypes.STRING,
+    year: DataTypes.INTEGER,
+    album_name: DataTypes.STRING,
     summary: DataTypes.JSON,
-    lyrics: DataTypes.JSON,
+    lyrics: DataTypes.JSON
   }, {
     sequelize,
     modelName: 'Song',

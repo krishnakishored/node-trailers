@@ -23,7 +23,8 @@ module.exports = {
     ]
     //temporarily add the slug to the albums - beforeCreate, beforeBulkCreate hooks should take care of this
     albums_array.forEach(async (album) => {
-      let slug_field_combo = album.language + " " + album.year + " " + album.title
+      let slug_field_combo = album.title + " " + album.year + " " + album.language
+
       album.slug = slug_field_combo.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-')
       album.createdAt = new Date()
       album.updatedAt = new Date()
@@ -39,5 +40,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    await queryInterface.bulkDelete('Albums', null, {});
   }
 };
