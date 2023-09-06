@@ -131,10 +131,17 @@ $ npx sequelize-cli --version
     # to generate the seed files:
     # $ npx sequelize-cli seed:generate --name demo-song
 ```
+1. create junction tables for the Many-to-Many relationships
+    > $ npx sequelize-cli model:generate --name ArtistSungSongs --attributes artist_slug:string,song_slug:string
+    > $ npx sequelize-cli model:generate --name ArtistWrittenSongs --attributes artist_slug:string,song_slug:string
+    > $ npx sequelize-cli model:generate --name ArtistComposedSongs --attributes artist_slug:string,song_slug:string
+
 1. try to query the database using the models
 ```js
     $ node database/query.js
 ```
+
+
 
 $ npx sequelize-cli model:generate --name ArtistAlbum --attributes artist_slug:string,album_slug:string
 # db:migrate will create the table in the database

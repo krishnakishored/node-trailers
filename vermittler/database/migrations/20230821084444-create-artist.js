@@ -19,27 +19,27 @@ module.exports = {
         unique: true,
         type: Sequelize.STRING
       },
-      sung_songs: {
-        type: Sequelize.JSON,
-        references: {
-          model: 'Songs',
-          key: 'slug'
-        },
-      },
-      composed_songs: {
-        type: Sequelize.JSON,
-        references: {
-          model: 'Songs',
-          key: 'slug'
-        },
-      },
-      written_songs: {
-        type: Sequelize.JSON,
-        references: {
-          model: 'Songs',
-          key: 'slug'
-        },
-      },
+      // sung_songs: {
+      //   type: Sequelize.JSON,
+      //   references: {
+      //     model: 'Songs',
+      //     key: 'slug'
+      //   },
+      // },
+      // composed_songs: {
+      //   type: Sequelize.JSON,
+      //   references: {
+      //     model: 'Songs',
+      //     key: 'slug'
+      //   },
+      // },
+      // written_songs: {
+      //   type: Sequelize.JSON,
+      //   references: {
+      //     model: 'Songs',
+      //     key: 'slug'
+      //   },
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

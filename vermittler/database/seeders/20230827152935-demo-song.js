@@ -27,9 +27,9 @@ module.exports = {
           foreign: ["This is the lyrics of song 1"],
           native: ["This is the native lyrics of song 1"],
         },
-        // singers: ['singer 1', 'singer 2'],
-        // lyricists: ['lyricist 1', 'lyricist 2'],
-        // music_directors: ['music director 1', 'music director 2'],
+        singers: ['singer 1', 'singer 2'],
+        lyricists: ['lyricist 1', 'lyricist 2'],
+        music_directors: ['music director 1', 'music director 2'],
       },
       {
         title: 'Song 2',
@@ -45,9 +45,9 @@ module.exports = {
           foreign: ["This is the lyrics of song 2"],
           native: ["This is the native lyrics of song 2"],
         },
-        // singers: ['singer 1'],
-        // lyricists: ['lyricist 2'],
-        // music_directors: ['music director 2'],
+        singers: ['singer 1'],
+        lyricists: ['lyricist 2'],
+        music_directors: ['music director 2'],
       },
       {
         title: 'Song 3',
@@ -62,9 +62,9 @@ module.exports = {
           foreign: ["This is the lyrics of song 3"],
           native: ["This is the native lyrics of song 3"],
         },
-        // singers: ['singer 2'],
-        // lyricists: ['lyricist 1'],
-        // music_directors: ['music director 2'],
+        singers: ['singer 2'],
+        lyricists: ['lyricist 1'],
+        music_directors: ['music director 2'],
       }
 
     ]
@@ -79,6 +79,48 @@ module.exports = {
       //stringify the json objects
       song.summary = JSON.stringify(song.summary)
       song.lyrics = JSON.stringify(song.lyrics)
+
+      // insert into ArtistSungSongs, ArtistWrittenSongs, ArtistComposedSongs
+      let singers_array = []
+      let lyricists_array = []
+      let music_directors_array = []
+      song.singers.forEach(singer => {
+        singers_array.push({
+          artist_slug: singer.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-'),
+          song_slug: song.slug,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        })
+      })
+
+      song.lyricists.forEach(lyricist => {
+        lyricists_array.push({
+          artist_slug: lyricist.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-'),
+          song_slug: song.slug,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        })
+      })
+
+      song.music_directors.forEach(music_director => {
+        music_directors_array.push({
+          artist_slug: music_director.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-'),
+          song_slug: song.slug,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        })
+      })
+
+      await queryInterface.bulkInsert('ArtistSungSongs', singers_array, {});
+      await queryInterface.bulkInsert('ArtistWrittenSongs', lyricists_array, {});
+      await queryInterface.bulkInsert('ArtistComposedSongs', music_directors_array, {});
+    })
+
+    // discard the singers, lyricists, music_directors arrays
+    songs_array.forEach(song => {
+      delete song.singers
+      delete song.lyricists
+      delete song.music_directors
     })
     await queryInterface.bulkInsert('Songs', songs_array, {});
   },

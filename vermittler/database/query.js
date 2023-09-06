@@ -1,6 +1,6 @@
 // sample queries using sequelize
 
-const { Album, Song, sequelize } = require('./models')
+const { Album, Song, Artist, sequelize } = require('./models')
 const Sequelize = require('sequelize');
 const { QueryTypes } = require('sequelize');
 const Op = Sequelize.Op
@@ -78,6 +78,62 @@ const findAlbumsUsingRawSQL = async () => {
     console.log(albums)
 }
 
+// Define a function to fetch a song and its associated artists
+async function fetchSongWithArtists(songSlugToFetch) {
+    console.log('Fetching song with slug:', songSlugToFetch);
+    try {
+        // const song = await Song.findOne({ where: { slug: songSlugToFetch } });
+        const song = await Song.findOne(
+            {
+                where: {
+                    slug: songSlugToFetch,
+                },
+                include: [
+                    {
+                        model: Artist,
+                        as: 'singers',
+                        through: 'ArtistSungSongs',
+                    },
+                    {
+                        model: Artist,
+                        as: 'music_directors',
+                        through: 'ArtistComposedSongs',
+                    },
+                    {
+                        model: Artist,
+                        as: 'lyricists',
+                        through: 'ArtistWrittenSongs',
+                    },
+                ],
+            });
+        console.log(JSON.stringify(song))
+
+        // if (song) {
+        //     console.log('Song Title:', song.title);
+
+        //     console.log('Singers:');
+        //     song.singers.forEach(singer => {
+        //         console.log(singer.name);
+        //     });
+
+        //     console.log('Composers:');
+        //     song.music_directors.forEach(composer => {
+        //         console.log(composer.name);
+        //     });
+
+        //     console.log('Lyricists:');
+        //     song.lyricists.forEach(lyricist => {
+        //         console.log(lyricist.name);
+        //     });
+        // } else {
+        //     console.log('Song not found.');
+        // }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
 const run = async () => {
 
     // await findAlbumsWithSongs();
@@ -96,14 +152,19 @@ const run = async () => {
     // console.log(songs)
     // // get the album of a song
     // const song = await Song.findOne({ where: { slug: 'album-1-2000-telugu-song-1' } });
-    // console.log(song)
+    // console.log(JSON.stringify(song))
     // const album = await song.getAlbum();
     // console.log(album)
     // // get the songs of an album
-    const album = await Album.findOne({ where: { slug: 'album-1-2000-telugu' } });
-    console.log(JSON.stringify(album))
+    // const album = await Album.findOne({ where: { slug: 'album-1-2000-telugu' } });
+    // console.log(JSON.stringify(album))
     // const songs = await album.getSongs();
     // console.log(JSON.stringify(songs))
+
+
+    // // Usage: Fetch a song and its associated artists
+    let songSlugToFetch = 'album-1-2000-telugu-song-1'; // Replace with the slug of the song you want to fetch
+    await fetchSongWithArtists(songSlugToFetch);
 
 
     process.exit();
