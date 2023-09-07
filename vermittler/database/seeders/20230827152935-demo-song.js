@@ -1,4 +1,5 @@
 'use strict';
+const { Artist } = require('../models')
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -84,36 +85,49 @@ module.exports = {
       let singers_array = []
       let lyricists_array = []
       let music_directors_array = []
-      song.singers.forEach(singer => {
+      song.singers.forEach(async (singer) => {
+        let artist = await Artist.findOne({ where: { slug: singer.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-') } })
+        console.log(JSON.stringify(artist))
         singers_array.push({
-          artist_slug: singer.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-'),
-          song_slug: song.slug,
+          // artist_slug: singer.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-'),
+          // song_slug: song.slug,
+          song_id: song.id,
+          artist_id: artist.id,
           createdAt: new Date(),
           updatedAt: new Date(),
         })
       })
 
-      song.lyricists.forEach(lyricist => {
+      song.lyricists.forEach(async (lyricist) => {
+        let artist = await Artist.findOne({ where: { slug: lyricist.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-') } })
+        console.log(JSON.stringify(artist))
         lyricists_array.push({
-          artist_slug: lyricist.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-'),
-          song_slug: song.slug,
+          // artist_slug: lyricist.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-'),
+          // song_slug: song.slug,
+          song_id: song.id,
+          artist_id: artist.id,
           createdAt: new Date(),
           updatedAt: new Date(),
         })
       })
 
-      song.music_directors.forEach(music_director => {
+      song.music_directors.forEach(async (music_director) => {
+        let artist = await Artist.findOne({ where: { slug: music_director.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-') } })
+        console.log(JSON.stringify(artist))
         music_directors_array.push({
-          artist_slug: music_director.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-'),
-          song_slug: song.slug,
+          // artist_slug: music_director.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-'),
+          // song_slug: song.slug,
+          song_id: song.id,
+          artist_id: artist.id,
           createdAt: new Date(),
           updatedAt: new Date(),
         })
       })
 
-      await queryInterface.bulkInsert('ArtistSungSongs', singers_array, {});
-      await queryInterface.bulkInsert('ArtistWrittenSongs', lyricists_array, {});
-      await queryInterface.bulkInsert('ArtistComposedSongs', music_directors_array, {});
+      console.log(JSON.stringify(singers_array))
+      // await queryInterface.bulkInsert('ArtistSungSongs', singers_array, {});
+      // await queryInterface.bulkInsert('ArtistWrittenSongs', lyricists_array, {});
+      // await queryInterface.bulkInsert('ArtistComposedSongs', music_directors_array, {});
     })
 
     // discard the singers, lyricists, music_directors arrays

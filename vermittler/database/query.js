@@ -7,6 +7,12 @@ const Op = Sequelize.Op
 
 
 
+const findArtistIDBySlug = async (slug) => {
+    const artist = await Artist.findOne({ where: { slug: slug } });
+    console.log(artist)
+    return artist.id
+}
+
 // // Find all albums with their associated songs
 // // Raw SQL: SELECT * FROM "Albums" JOIN "Songs" ON "Songs"."album_slug" = "Albums".slug;
 const findAlbumsWithSongs = async () => {
@@ -93,16 +99,22 @@ async function fetchSongWithArtists(songSlugToFetch) {
                         model: Artist,
                         as: 'singers',
                         through: 'ArtistSungSongs',
+                        foreignKey: 'song_id',
+                        otherKey: 'artist_id',
                     },
                     {
                         model: Artist,
                         as: 'music_directors',
                         through: 'ArtistComposedSongs',
+                        foreignKey: 'song_id',
+                        otherKey: 'artist_id',
                     },
                     {
                         model: Artist,
                         as: 'lyricists',
                         through: 'ArtistWrittenSongs',
+                        foreignKey: 'song_id',
+                        otherKey: 'artist_id',
                     },
                 ],
             });
@@ -166,6 +178,9 @@ const run = async () => {
     let songSlugToFetch = 'album-1-2000-telugu-song-1'; // Replace with the slug of the song you want to fetch
     await fetchSongWithArtists(songSlugToFetch);
 
+
+    // let artist_id = await findArtistIDBySlug('singer-1')
+    // console.log(JSON.stringify(artist_id))
 
     process.exit();
 }

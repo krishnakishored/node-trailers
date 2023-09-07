@@ -9,11 +9,19 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      artist_slug: {
-        type: Sequelize.STRING
+      artist_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Artists',
+          key: 'id'
+        },
       },
-      song_slug: {
-        type: Sequelize.STRING
+      song_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Songs',
+          key: 'id'
+        },
       },
       createdAt: {
         allowNull: false,

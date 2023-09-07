@@ -14,17 +14,17 @@ module.exports = (sequelize, DataTypes) => {
       Song.belongsToMany(models.Artist, {
         through: 'ArtistSungSongs',
         as: 'singers',
-        foreignKey: 'song_slug',
+        foreignKey: 'song_id',
       });
       Song.belongsToMany(models.Artist, {
         through: 'ArtistWrittenSongs',
         as: 'lyricists',
-        foreignKey: 'song_slug',
+        foreignKey: 'song_id',
       });
       Song.belongsToMany(models.Artist, {
         through: 'ArtistComposedSongs',
         as: 'music_directors',
-        foreignKey: 'song_slug',
+        foreignKey: 'song_id',
       });
     }
 

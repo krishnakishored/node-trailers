@@ -119,23 +119,52 @@ $ npx sequelize-cli --version
         // onDelete: 'CASCADE'
       },
 ```
-1. try to create the tables for album and song in the database using the migrations
+1. try to create the tables for album,artist,song in the database using the migrations
 ```sh
     $ npx sequelize-cli db:migrate --name 20230904115646-create-album
+    $ npx sequelize-cli db:migrate --name 20230821084444-create-artist
     $ npx sequelize-cli db:migrate --name 20230904115941-create-song
 ```
+1. Define associations in the models 
+    ```js
+    // @ ~/vermittler/database/migrations/20230906160327-create-artist-composed-songs
+     artist_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Artists',
+          key: 'id'
+        },
+      },
+      song_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Songs',
+          key: 'id'
+        },
+      },
+    ```
+1. add the references for artist_id annd song_id in the junction tables    
+    ```sh
+        # to define the junction tables
+        $ npx sequelize-cli model:generate --name ArtistSungSongs --attributes artist_id:integer,song_id:integer
+        $ npx sequelize-cli model:generate --name ArtistWrittenSongs --attributes artist_slug:integer,song_slug:integer
+        $ npx sequelize-cli model:generate --name ArtistComposedSongs --attributes artist_slug:integer,song_slug:integer
+    ```
+
+1. Add migrations for Artist and Song Models (Many to Many)
+    ```sh
+        $ npx sequelize-cli db:migrate --name 20230906160327-create-artist-composed-songs.js
+        $ npx sequelize-cli db:migrate --name 20230906160320-create-artist-written-songs.js
+        $ npx sequelize-cli db:migrate --name 20230906160311-create-artist-sung-songs.js
+    ```
 1. seed the models with some data
 ```sh
     $ npx sequelize-cli db:seed --seed 20230827164825-demo-album.js
+    $ npx sequelize-cli db:seed --seed 20230817062507-demo-artist.js
     $ npx sequelize-cli db:seed --seed 20230827152935-demo-song.js
     # to generate the seed files:
     # $ npx sequelize-cli seed:generate --name demo-song
 ```
-1. create junction tables for the Many-to-Many relationships
-    > $ npx sequelize-cli model:generate --name ArtistSungSongs --attributes artist_slug:string,song_slug:string
-    > $ npx sequelize-cli model:generate --name ArtistWrittenSongs --attributes artist_slug:string,song_slug:string
-    > $ npx sequelize-cli model:generate --name ArtistComposedSongs --attributes artist_slug:string,song_slug:string
-
 1. try to query the database using the models
 ```js
     $ node database/query.js
@@ -146,15 +175,8 @@ $ npx sequelize-cli --version
 $ npx sequelize-cli model:generate --name ArtistAlbum --attributes artist_slug:string,album_slug:string
 # db:migrate will create the table in the database
 $ npx sequelize-cli db:migrate
-# db migrate specific migration
-$ npx sequelize-cli db:migrate --name 20230821084444-create-artist
-$ npx sequelize-cli db:migrate --name 20230827152309-create-song
-$ npx sequelize-cli db:migrate --name 20230827164349-create-album
-# undo the last migration
-$ npx sequelize-cli db:migrate:undo 
-# undo the specific migration
-$ npx sequelize-cli db:migrate:undo --name 20230817052134-create-user
-# This will create xxx-migration-skeleton.js in your migration folder
+
+This will create xxx-migration-skeleton.js in your migration folder
 $ npx sequelize-cli migration:generate --name <name_of_your_migration>
 # This will:
     # - Create a model file user in models folder;
@@ -193,49 +215,6 @@ $ npx sequelize-cli migration:generate --name <name_of_your_migration>
     
 ```
 - (TODO) use `queryInterface.sequelize.transaction` in migrations
-
-### Sequence of steps to create models, associations, migrations, seeds
-1. Create the models without associations
-```sh
-    # Artist model
-    $ npx sequelize-cli model:generate --name Artist --attributes name:string,slug:string --force 
-    # Song model
-    $ npx sequelize-cli model:generate --name Song --attributes title:string,slug:string,summary:json,lyrics:json,native_lyrics:json
-    # Album model
-    $ npx sequelize-cli model:generate --name Album --attributes title:string,slug:string,language:string,year:integer,summary:json
-    # ArtistSungSongs model
-    $ npx sequelize-cli model:generate --name ArtistSungSongs --attributes artistId:integer,songId:integer
-    # ArtistLyricistSongs model
-    $ npx sequelize-cli model:generate --name ArtistLyricistSongs --attributes artistId:integer,songId:integer
-    # ArtistMusicDirectorSongs model
-    $ npx sequelize-cli model:generate --name ArtistMusicDirectorSongs --attributes artistId:integer,songId:integer
-
-```
-
-1. Run the migrations to create the tables
-```sh
-    $ npx sequelize-cli db:migrate --name 001-create-album.js
-    $ npx sequelize-cli db:migrate --name 101-create-song.js
-    $ npx sequelize-cli db:migrate --name 201-create-artist.js
-    $ npx sequelize-cli db:migrate --name 102-create-song.js
-```
-1. Use the `queryInterface.addColumn` to add the foreign keys in the tables
-1. Add associations manually in the models
-
-1. Create the Junction Table
-1. Run the migration for the junction table
-1. Create the associations
-1. Create the migrations
-1. Create the seeds
-```sh
-    $ npx sequelize-cli db:seed --seed 20230827164825-demo-album.js
-    $ npx sequelize-cli db:seed --seed 20230827152935-demo-song.js
-    $ npx sequelize-cli db:seed --seed 20230817062507-demo-artist.js
-```    
-1. Run the migrations
-1. Run the seeds
-
-
 
 ### Operator
 `Sequelize.Op` is an object that contains a set of operators that can be used in Sequelize queries. Here are some basic use cases of `Sequelize.Op`:
