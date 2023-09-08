@@ -9,7 +9,7 @@ const Op = Sequelize.Op
 
 const findArtistIDBySlug = async (slug) => {
     const artist = await Artist.findOne({ where: { slug: slug } });
-    console.log(artist)
+    console.log(JSON.stringify(artist))
     return artist.id
 }
 
@@ -175,13 +175,18 @@ const run = async () => {
 
 
     // // Usage: Fetch a song and its associated artists
-    let songSlugToFetch = 'album-1-2000-telugu-song-1'; // Replace with the slug of the song you want to fetch
-    await fetchSongWithArtists(songSlugToFetch);
+    // let songSlugToFetch = 'album-1-2000-telugu-song-1'; // Replace with the slug of the song you want to fetch
+    // await fetchSongWithArtists(songSlugToFetch);
 
 
-    // let artist_id = await findArtistIDBySlug('singer-1')
-    // console.log(JSON.stringify(artist_id))
+    let artist_id = await findArtistIDBySlug('singer-1')
+    console.log(JSON.stringify(artist_id))
 
     process.exit();
 }
 run();
+
+
+module.exports = {
+    findArtistIDBySlug
+}
