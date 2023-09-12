@@ -118,31 +118,34 @@ async function fetchSongWithArtists(songSlugToFetch) {
                     },
                 ],
             });
-        console.log(JSON.stringify(song))
 
-        // if (song) {
-        //     console.log('Song Title:', song.title);
+        if (song) {
+            console.log('Song Title:', song.title);
 
-        //     console.log('Singers:');
-        //     song.singers.forEach(singer => {
-        //         console.log(singer.name);
-        //     });
+            console.log('-------Singers:-------');
+            song.singers.forEach(singer => {
+                console.log(singer.name);
+            });
 
-        //     console.log('Composers:');
-        //     song.music_directors.forEach(composer => {
-        //         console.log(composer.name);
-        //     });
+            console.log('-------Composers:-------');
+            song.music_directors.forEach(composer => {
+                console.log(composer.name);
+            });
 
-        //     console.log('Lyricists:');
-        //     song.lyricists.forEach(lyricist => {
-        //         console.log(lyricist.name);
-        //     });
-        // } else {
-        //     console.log('Song not found.');
-        // }
+            console.log('-------Lyricists:-------');
+            song.lyricists.forEach(lyricist => {
+                console.log(lyricist.name);
+            });
+        } else {
+            console.log('Song not found.');
+        }
+
+        return song
     } catch (error) {
         console.error('Error:', error);
+        return null;
     }
+
 }
 
 
@@ -162,9 +165,6 @@ const run = async () => {
     // // get all songs of an album
     // const songs = await Song.findAll({ where: { album_slug: 'album-2-2001-tamil' } });
     // console.log(songs)
-    // // get the album of a song
-    // const song = await Song.findOne({ where: { slug: 'album-1-2000-telugu-song-1' } });
-    // console.log(JSON.stringify(song))
     // const album = await song.getAlbum();
     // console.log(album)
     // // get the songs of an album
@@ -174,13 +174,16 @@ const run = async () => {
     // console.log(JSON.stringify(songs))
 
 
-    // // Usage: Fetch a song and its associated artists
-    // let songSlugToFetch = 'album-1-2000-telugu-song-1'; // Replace with the slug of the song you want to fetch
-    // await fetchSongWithArtists(songSlugToFetch);
+    // let songSlugToFetch = 'album-1-2000-telugu-song-1';
+    let songSlugToFetch = 'album-3-2002-hindi-song-3';
 
+    const song = await fetchSongWithArtists(songSlugToFetch);
 
-    let artist_id = await findArtistIDBySlug('singer-1')
-    console.log(JSON.stringify(artist_id))
+    // const song = await Song.findOne({ where: { slug: songSlugToFetch } });
+    console.log(JSON.stringify(song))
+
+    // let artist_id = await findArtistIDBySlug('singer-1')
+    // console.log(JSON.stringify(artist_id))
 
     process.exit();
 }

@@ -1,10 +1,24 @@
 'use strict';
-const { Artist } = require('../models')
+const { Artist, Song } = require('../models')
 
 /** @type {import('sequelize-cli').Migration} */
 
 
 
+
+const song_data_pruner = (song) => {
+  console.log(`--------- song: ${JSON.stringify(song.title)} ----------------`)
+  let album_slug_combo = song.album_name + " " + song.year + " " + song.language
+  song.album_slug = album_slug_combo.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-')
+  let song_title_slug = song.title.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-')
+  song.slug = song.album_slug + "-" + song_title_slug
+  song.createdAt = new Date()
+  song.updatedAt = new Date()
+  //stringify the json objects
+  song.summary = JSON.stringify(song.summary)
+  song.lyrics = JSON.stringify(song.lyrics)
+  return song
+}
 
 const populateSongs = async (queryInterface, songs_array) => {
   //discard the singers, lyricists, music_directors arrays
@@ -12,25 +26,16 @@ const populateSongs = async (queryInterface, songs_array) => {
     delete song.singers
     delete song.lyricists
     delete song.music_directors
+    song = song_data_pruner(song)
   }
   await queryInterface.bulkInsert('Songs', songs_array, {});
 }
 
-
 const populateAssociationTables = async (queryInterface, songs_array) => {
 
   for (let song of songs_array) {
-    console.log(`--------- song: ${JSON.stringify(song.title)} ----------------`)
-    let album_slug_combo = song.album_name + " " + song.year + " " + song.language
-    song.album_slug = album_slug_combo.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-')
-    let song_title_slug = song.title.toLowerCase().replace(/[*+~.()'"!:@\s]+/g, '-')
-    song.slug = song.album_slug + "-" + song_title_slug
-    song.createdAt = new Date()
-    song.updatedAt = new Date()
-    //stringify the json objects
-    song.summary = JSON.stringify(song.summary)
-    song.lyrics = JSON.stringify(song.lyrics)
 
+    song = song_data_pruner(song)
     // insert into ArtistSungSongs, ArtistWrittenSongs, ArtistComposedSongs
     let singers_array = []
     let lyricists_array = []
@@ -171,7 +176,7 @@ module.exports = {
       },
     ]
 
-    await populateSongs(queryInterface, songs_array);
+    // await populateSongs(queryInterface, songs_array);
     await populateAssociationTables(queryInterface, songs_array)
   },
 
